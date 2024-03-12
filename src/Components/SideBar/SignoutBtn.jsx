@@ -1,8 +1,16 @@
 import React, { useState } from 'react';
 import PowerSettingsNewOutlined from '@mui/icons-material/PowerSettingsNewOutlined';
+import { useAuth } from '../../context/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 export default function SignoutBtn() {
   const [confirm, setConfirm] = useState();
+  const { setUserData } = useAuth();
+  const navigate = useNavigate();
+  const handleLogout = async () => {
+    await setUserData();
+    navigate('/');
+  };
   return (
     <div className='px-2 w-full caret-transparent mt-2 '>
       {!confirm ? (
@@ -23,7 +31,10 @@ export default function SignoutBtn() {
           >
             Cancel
           </div>
-          <div className=' flex-1  bg-lightMode-button dark:bg-lightMode-button text-lightMode-header  text-sm dark:text-lightMode-header hover:bg-lightMode-buttonHover rounded-lg py-[18.5px] text-center th cursor-pointer'>
+          <div
+            className=' flex-1  bg-lightMode-button dark:bg-lightMode-button text-lightMode-header  text-sm dark:text-lightMode-header hover:bg-lightMode-buttonHover rounded-lg py-[18.5px] text-center th cursor-pointer'
+            onClick={handleLogout}
+          >
             Sign out
           </div>
         </div>

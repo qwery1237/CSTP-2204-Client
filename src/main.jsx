@@ -17,12 +17,15 @@ import SearchScreen from './Screen/SearchScreen.jsx';
 import Accounts from './Accounts.jsx';
 
 const router = createBrowserRouter([
-  { index: true, element: <LandingPage /> },
   {
     path: '/',
     element: <App />,
     errorElement: <Error />,
     children: [
+      {
+        index: true,
+        element: <LandingPage />,
+      },
       {
         path: 'error',
         element: <Error />,
@@ -40,7 +43,7 @@ const router = createBrowserRouter([
         element: <Rewards />,
       },
       {
-        path: 'gs',
+        path: 'gs/:id',
         element: <GasStation />,
       },
       {
@@ -49,22 +52,6 @@ const router = createBrowserRouter([
       },
     ],
   },
-  // {
-  //   path: '/login',
-  //   element: <Login />,
-  // },
-  // {
-  //   path: '/signup',
-  //   element: <Signup />,
-  // },
-  // {
-  //   path: '/forgetpassword',
-  //   element: <ForgetPassword />,
-  // },
-  // {
-  //   path: '/changepassword/:id',
-  //   element: <ChangePassWord />,
-  // },
   {
     path: '/profile',
     element: <ProfileScreen />,

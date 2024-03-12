@@ -6,10 +6,11 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import serverLink from '../serverLink';
 import CustomButton from '../Components/UI/CustomButton';
+import { useAuth } from '../context/AuthContext';
 export default function LandingPage() {
   const navigate = useNavigate();
+  const { user } = useAuth();
   const handleMovePage = async () => {
-    const user = await handleUserData();
     user ? navigate('/home') : navigate('/accounts/login');
   };
   const handleUserData = async () => {

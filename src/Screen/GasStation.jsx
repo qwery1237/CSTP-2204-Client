@@ -11,8 +11,10 @@ import Amenities from '../Components/StationDetail/Amenities';
 import Contributor from '../Components/StationDetail/Contributor/Contributor';
 import CommentSection from '../Components/StationDetail/CommentSection/CommentSection';
 import Modal from '../Components/UI/Modal';
+import { useLocation } from 'react-router-dom';
 
 export default function GasStation() {
+  const { station } = useLocation().state;
   const [isProfilePopUp, setIsProfilePopUp] = useState(false);
   const [modal, setModal] = useState({});
   const [gasInfo, setGasInfo] = useState([
@@ -78,7 +80,7 @@ export default function GasStation() {
         </div>
       </TopNav>
       <div className=' flex-1 flex-col overflow-auto mt-3'>
-        <StationInfo setModal={setModal} />
+        <StationInfo setModal={setModal} station={station} />
         <GasPrice gasInfo={gasInfo} setModal={setModal} />
         <Amenities />
         <Contributor />

@@ -1,17 +1,47 @@
 import React, { useState } from 'react';
 import CustomInput from '../Components/UI/CustomInput';
 import { MdLockOutline, MdOutlineMail } from 'react-icons/md';
-import { useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import CustomButton from '../Components/UI/CustomButton';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import GoogleLoginBtn from '../Components/Auth/GoogleLoginBtn';
+import { emailLogin } from '../api/auth';
+import { useAuth } from '../context/AuthContext';
 export default function Login() {
+  const { setUserData } = useAuth();
   // return <AuthPageUiWrapper isLogin={true} />;
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
+  const [emailError, setEmailError] = useState();
+  const [passwordError, setPasswordError] = useState();
   const navigate = useNavigate();
-  const handleSubmit = () => {};
-
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setEmailError();
+    setPasswordError();
+    if (!email) {
+      setEmailError('Email is empty');
+      return;
+    }
+    if (!password) {
+      setPasswordError('Password is empty');
+      return;
+    }
+    try {
+      const { success, token, error, fault } = await emailLogin(
+        email,
+        password
+      );
+      if (error) {
+        fault == 'password' ? setPasswordError(error) : setEmailError(error);
+        return;
+      }
+      await setUserData(token);
+      navigate('/home');
+    } catch (err) {
+      alert(err);
+    }
+  };
   return (
     <div className='h-full '>
       <h2 className=' text-white text-2xl font-semibold mb-4'>Welcome back!</h2>
@@ -23,6 +53,7 @@ export default function Login() {
             paddingLeft='40px'
             placeHolder='Email'
             handleChange={(e) => setEmail(e.target.value)}
+            errorMessage={emailError}
           >
             <MdOutlineMail className='absolute left-2 tp text-2xl bottom-[8px]' />
           </CustomInput>
@@ -31,6 +62,7 @@ export default function Login() {
             paddingLeft='40px'
             placeHolder='Password'
             handleChange={(e) => setPassword(e.target.value)}
+            errorMessage={passwordError}
           >
             <MdLockOutline className='absolute left-2 tp text-2xl bottom-[8px]' />
           </CustomInput>

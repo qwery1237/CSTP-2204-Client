@@ -20,7 +20,6 @@ export const otpValidation = async (email, otp) => {
       email,
       otp,
     });
-    console.log(response);
     return response.data;
   } catch (e) {
     throw new Error(e);
@@ -38,15 +37,43 @@ export const otpResend = async (email) => {
   }
 };
 
-export const creatAccount = async (email) => {
+export const createAccount = async (email) => {
   const name = email.split('@')[0];
+  const profileImg = '/profileDefault.jpg';
 
   try {
     const response = await axios.post(serverLink + '/auth/adduserdata', {
       email,
       name,
+      profileImg,
     });
     return response.data;
+  } catch (e) {
+    throw new Error(e);
+  }
+};
+export const emailLogin = async (email, password) => {
+  try {
+    const response = await axios.post(serverLink + '/auth/emaillogin', {
+      email,
+      password,
+    });
+    return response.data;
+  } catch (e) {
+    throw new Error(e);
+  }
+};
+
+export const getUserData = async (token, setUser) => {
+  try {
+    const response = await axios.get(serverLink + '/user/getuserdata', {
+      headers: {
+        Authorization: 'Bearer ' + token,
+      },
+    });
+    const userData = response.data.data;
+    setUser(userData);
+    return userData;
   } catch (e) {
     throw new Error(e);
   }

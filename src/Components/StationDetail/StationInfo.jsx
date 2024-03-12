@@ -7,7 +7,8 @@ import AccessTimeOutlinedIcon from '@mui/icons-material/AccessTimeOutlined';
 import MakeImpact from './MakeImpact';
 import StationMapDistance from './StationMapDistance';
 
-export default function StationInfo({ setModal }) {
+export default function StationInfo({ setModal, station }) {
+  const { name, profileImg, distanceFromUser, address } = station;
   const [distance, setDistance] = useState(null);
   const [duration, setDuration] = useState(null);
   const [isDirectionMap, setIsDirectionMap] = useState(false);
@@ -52,13 +53,17 @@ export default function StationInfo({ setModal }) {
   }
 
   return (
-    <div className=' w-full rounded-lg  cborder flex flex-row p-4 max-[640px]:items-center max-[640px]:flex-col max-[380px]:px-2 '>
+    <div
+      className={` w-full rounded-lg  cborder flex flex-row p-4 max-[640px]:items-center max-[640px]:flex-col max-[380px]:px-2 ${
+        isDirectionMap ? 'h-[292px]' : ''
+      }`}
+    >
       <div className=' relative w-[320px] h-[180px] max-[350px]:w-full '>
         {!isDirectionMap ? (
           <div className=' relative w-full h-full top-0 left-0 overflow-hidden'>
             <img
               className=' w-full h-full rounded-lg object-cover'
-              src='/oilrig.jpg'
+              src={profileImg}
               alt=''
             />
             <div className=' absolute top-2 right-2 th cursor-pointer '>
@@ -103,7 +108,7 @@ export default function StationInfo({ setModal }) {
                       <div className=' text-sm'>Distance</div>
                     </div>
 
-                    <div className=' text-sm'>{distance}</div>
+                    <div className=' text-sm'>{distanceFromUser}</div>
                   </div>
                   <div className=' flex flex-row items-center justify-between th mt-4'>
                     <div className=' flex flex-row items-center gap-x-1 tp'>
@@ -127,7 +132,7 @@ export default function StationInfo({ setModal }) {
       >
         <div className='flex flex-row w-full items-center justify-between'>
           <div className='w-[225px] max-[325px]:w-[200px] max-[300px]:w-[175px]  text-2xl font-[400] th max-[640px]:text-xl text-ellipsis whitespace-nowrap overflow-hidden'>
-            Chevron gas stations
+            {name}
           </div>
           <div className='p-[6px] rounded-full th fbg text-xs min-[640px]:hidden'>
             {rating}
@@ -138,14 +143,11 @@ export default function StationInfo({ setModal }) {
           <div className='  relative '>
             <div className=' flex flex-row gap-x-[2px]'>{stars}</div>
           </div>
-          <div className=' text-[9px] relative top-[-4px] right-[4px]'>
-            (246)
-          </div>
+          <div className=' text-[12px] relative top-0 right-[4px]'>(246)</div>
         </div>
         <div className='tp flex  w-full  max-[640px]:mt-2 flex-col max-[640px]:flex-row max-[640px]:justify-between'>
           <div className=' w-[230px] max-[640px]:w-[calc(100%-95px)] max-[350px]:w-[220px] max-[330px]:w-[200px] max-[310px]:w-[180px] max-[290px]:w-[160px] text-ellipsis whitespace-nowrap overflow-hidden '>
-            {' '}
-            12343 st king highway
+            {address}
           </div>
           <div className=' tb text-sm hover:underline cursor-pointer min-[640px]:hidden ml-2 whitespace-nowrap'>
             Get directions

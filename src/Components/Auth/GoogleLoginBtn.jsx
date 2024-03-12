@@ -7,6 +7,7 @@ import googleImg from '/google.png';
 export default function GoogleLoginBtn() {
   const login = useGoogleLogin({
     onSuccess: (codeResponse) => {
+      console.log(codeResponse);
       axios
         .get(
           `https://www.googleapis.com/oauth2/v1/userinfo?access_token=${codeResponse.access_token}`,

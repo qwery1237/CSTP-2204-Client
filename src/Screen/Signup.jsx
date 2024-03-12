@@ -40,12 +40,14 @@ export default function Signup() {
       return;
     }
     try {
-      const data = await emailSignUp(email, password, isAgreedToTerms);
+      const { error, fault } = await emailSignUp(
+        email,
+        password,
+        isAgreedToTerms
+      );
 
-      if (data.error) {
-        data.fault == 'email'
-          ? setEmailError(data.error)
-          : setPasswordError(data.error);
+      if (error) {
+        fault == 'email' ? setEmailError(error) : setPasswordError(error);
         return;
       }
 
