@@ -3,18 +3,11 @@ import EditIcon from '@mui/icons-material/Edit';
 import BadgeOutlinedIcon from '@mui/icons-material/BadgeOutlined';
 import CustomButton from '../UI/CustomButton';
 import CustomInput from '../UI/CustomInput';
+import { useAuth } from '../../context/AuthContext';
 
 export default function ProfileSetting() {
   //user data from backend
-  const [user, setUser] = useState({
-    name: 'Harinder Sran',
-    email: 'hss0220022gmail.com',
-    profileImg: '/oilrig.jpg',
-    frame: 'level5.jpg',
-    lv: 3,
-    crrEXP: 15,
-    requiredEXP: 75,
-  });
+  const { user } = useAuth();
 
   const [error, setError] = useState('');
 

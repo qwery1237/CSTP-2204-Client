@@ -36,7 +36,7 @@ export default function Home() {
   });
   const navigate = useNavigate();
   useEffect(() => {
-    getStationList();
+    // getStationList();
     // getData();
   }, []);
   const getStationList = async () => {
