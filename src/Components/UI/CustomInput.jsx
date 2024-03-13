@@ -11,9 +11,8 @@ export default function CustomInput({
   errorMessage,
   autoFocus,
 }) {
-  const isErrorInput = isInvalid || errorMessage;
   const inputCSS = `w-full th rounded-lg h-[40px] border-[1px] focus-visible:outline-none bg-lightMode-tbg dark:bg-darkMode-tbg border-lightMode-border dark:border-darkMode-border caret-lightMode-p dark:caret-darkMode-p placeholder:text-lightMode-p dark:placeholder:text-darkMode-p text-white min-w-28 ${
-    isErrorInput
+    errorMessage
       ? ' border-darkMode-error focus-visible:border-darkMode-error focus-visible:shadow-[0_0px_6px_#ff5f52]'
       : 'focus-visible:border-lightMode-button focus-visible:shadow-[0_0px_6px_#38bdf8]'
   }`;
@@ -36,7 +35,7 @@ export default function CustomInput({
         />
       </div>
       {children}
-      {isErrorInput && (
+      {errorMessage && (
         <div className='w-full flex items-center text-start text-xs text-darkMode-error absolute left-2.5 bottom-[-20px] gap-1'>
           {<PiWarningCircleBold />}
           {errorMessage ? errorMessage : ''}

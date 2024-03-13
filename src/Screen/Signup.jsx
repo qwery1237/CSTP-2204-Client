@@ -3,26 +3,25 @@ import CustomInput from '../Components/UI/CustomInput';
 import { MdLockOutline, MdOutlineMail } from 'react-icons/md';
 import CustomButton from '../Components/UI/CustomButton';
 import { useNavigate } from 'react-router-dom';
-import GoogleLoginBtn from '../Components/Auth/GoogleLoginBtn';
+import GoogleLoginBtn from '../Components/Login/GoogleLoginBtn';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import { emailSignUp } from '../api/auth';
 import Modal from '../Components/UI/Modal';
 import Otp from '../Components/Auth/Otp';
+import PasswordHideBtn from '../Components/Login/PasswordHideBtn';
+import LoginForm from '../Components/Login/LoginForm';
+import GoogleLogin from '../Components/Login/GoogleLogin';
 
 export default function Signup() {
   const navigate = useNavigate();
 
   const [showModal, setShowModal] = useState(false);
-
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
   const [isAgreedToTerms, setIsAgreedToTerms] = useState(false);
-
   const [emailError, setEmailError] = useState();
   const [passwordError, setPasswordError] = useState();
-  // return (
-  //   <AuthPageUiWrapper isLogin={false}/>
-  // );
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setEmailError();
@@ -47,15 +46,15 @@ export default function Signup() {
       );
 
       if (error) {
-        fault == 'email' ? setEmailError(error) : setPasswordError(error);
+        fault == 'password' ? setPasswordError(error) : setEmailError(error);
         return;
       }
-
       setShowModal(true);
     } catch (e) {
       alert(e);
     }
   };
+
   return (
     <>
       {showModal && (
@@ -68,26 +67,12 @@ export default function Signup() {
           Create an account
         </h2>
         <form onSubmit={handleSubmit} noValidate>
-          <div className='flex flex-col gap-y-6 mb-6 mt-6'>
-            <CustomInput
-              label='Email *'
-              paddingLeft='40px'
-              placeHolder='Email'
-              errorMessage={emailError}
-              handleChange={(e) => setEmail(e.target.value)}
-            >
-              <MdOutlineMail className='absolute left-2 tp text-2xl bottom-[8px]' />
-            </CustomInput>
-            <CustomInput
-              label='Password *'
-              paddingLeft='40px'
-              errorMessage={passwordError}
-              placeHolder='Password'
-              handleChange={(e) => setPassword(e.target.value)}
-            >
-              <MdLockOutline className='absolute left-2 tp text-2xl bottom-[8px]' />
-            </CustomInput>
-          </div>
+          <LoginForm
+            emailError={emailError}
+            passwordError={passwordError}
+            setEmail={setEmail}
+            setPassword={setPassword}
+          />
           <label className='inline-flex items-center mb-3'>
             <input
               onChange={() => setIsAgreedToTerms((prevState) => !prevState)}
@@ -99,7 +84,6 @@ export default function Signup() {
               I agree to the terms and conditions
             </span>
           </label>
-          {/* ToDo: add real function on login button and signin button*/}
           <CustomButton />
         </form>
         <div className=' text-lightMode-p text-sm dark:text-darkMode-p mt-4 mb-4 flex flex-row w-full items-center justify-center'>
@@ -113,25 +97,7 @@ export default function Signup() {
             </button>
           </h4>
         </div>
-
-        <div className='w-full relative mt-1'>
-          <div className='absolute top-0 border-b-[1px] border-lightMode-p dark:border-darkMode-p w-full'>
-            <div className='absolute top-[-10px] text-lightMode-p dark:text-darkMode-p w-full'>
-              <div className='w-full flex flex-row justify-center'>
-                <div
-                  className='  text-sm bg-lightMode-sbg dark:bg-darkMode-sbg max-[640px]:bg-lightMode-bg
-                dark:max-[640px]:bg-darkMode-bg rounded-full
-                px-1'
-                >
-                  or
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <GoogleOAuthProvider clientId='698921458629-k410ff2u0hnkl6bap113t8f9vepj8eoq.apps.googleusercontent.com'>
-          <GoogleLoginBtn />
-        </GoogleOAuthProvider>
+        <GoogleLogin />
       </div>
     </>
   );

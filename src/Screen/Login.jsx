@@ -4,14 +4,20 @@ import { MdLockOutline, MdOutlineMail } from 'react-icons/md';
 import { Navigate, useNavigate } from 'react-router-dom';
 import CustomButton from '../Components/UI/CustomButton';
 import { GoogleOAuthProvider } from '@react-oauth/google';
-import GoogleLoginBtn from '../Components/Auth/GoogleLoginBtn';
+import GoogleLoginBtn from '../Components/Login/GoogleLoginBtn';
 import { emailLogin } from '../api/auth';
 import { useAuth } from '../context/AuthContext';
+import { PiEyeBold, PiEyeClosedBold } from 'react-icons/pi';
+import PasswordHideBtn from '../Components/Login/PasswordHideBtn';
+import GoogleLogin from '../Components/Login/GoogleLogin';
+import LoginForm from '../Components/Login/LoginForm';
+
 export default function Login() {
-  const { setUserData } = useAuth();
-  // return <AuthPageUiWrapper isLogin={true} />;
+  const { updateUserData } = useAuth();
+
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
+  const [showPassword, setShowPassword] = useState(false);
   const [emailError, setEmailError] = useState();
   const [passwordError, setPasswordError] = useState();
   const navigate = useNavigate();
@@ -28,15 +34,12 @@ export default function Login() {
       return;
     }
     try {
-      const { success, token, error, fault } = await emailLogin(
-        email,
-        password
-      );
+      const { token, error, fault } = await emailLogin(email, password);
       if (error) {
         fault == 'password' ? setPasswordError(error) : setEmailError(error);
         return;
       }
-      await setUserData(token);
+      await updateUserData(token);
       navigate('/home');
     } catch (err) {
       alert(err);
@@ -47,33 +50,18 @@ export default function Login() {
       <h2 className=' text-white text-2xl font-semibold mb-4'>Welcome back!</h2>
 
       <form onSubmit={handleSubmit} noValidate>
-        <div className='flex flex-col gap-y-6 mb-6 mt-6'>
-          <CustomInput
-            label='Email *'
-            paddingLeft='40px'
-            placeHolder='Email'
-            handleChange={(e) => setEmail(e.target.value)}
-            errorMessage={emailError}
-          >
-            <MdOutlineMail className='absolute left-2 tp text-2xl bottom-[8px]' />
-          </CustomInput>
-          <CustomInput
-            label='Password *'
-            paddingLeft='40px'
-            placeHolder='Password'
-            handleChange={(e) => setPassword(e.target.value)}
-            errorMessage={passwordError}
-          >
-            <MdLockOutline className='absolute left-2 tp text-2xl bottom-[8px]' />
-          </CustomInput>
-        </div>
+        <LoginForm
+          setEmail={setEmail}
+          setPassword={setPassword}
+          emailError={emailError}
+          passwordError={passwordError}
+        />
 
         <div className='w-full text-end text-lightMode-button dark:text-darkMode-button text-sm pb-3 cursor-pointer'>
           <span onClick={() => navigate('/accounts/forgetpassword')}>
             Forget password?
           </span>
         </div>
-
         <CustomButton />
       </form>
       <div className=' text-lightMode-p text-sm dark:text-darkMode-p mt-4 mb-4 flex flex-row w-full items-center justify-center'>
@@ -88,24 +76,7 @@ export default function Login() {
         </h4>
       </div>
 
-      <div className='w-full relative mt-1'>
-        <div className='absolute top-0 border-b-[1px] border-lightMode-p dark:border-darkMode-p w-full'>
-          <div className='absolute top-[-10px] text-lightMode-p dark:text-darkMode-p w-full'>
-            <div className='w-full flex flex-row justify-center'>
-              <div
-                className='  text-sm bg-lightMode-sbg dark:bg-darkMode-sbg max-[640px]:bg-lightMode-bg
-                dark:max-[640px]:bg-darkMode-bg rounded-full
-                px-1'
-              >
-                or
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <GoogleOAuthProvider clientId='698921458629-k410ff2u0hnkl6bap113t8f9vepj8eoq.apps.googleusercontent.com'>
-        <GoogleLoginBtn />
-      </GoogleOAuthProvider>
+      <GoogleLogin />
     </div>
   );
 }

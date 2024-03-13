@@ -14,6 +14,7 @@ import Rewards from './Screen/Rewards.jsx';
 import GasStation from './Screen/GasStation.jsx';
 import ProfileScreen from './Screen/ProfileScreen.jsx';
 import SearchScreen from './Screen/SearchScreen.jsx';
+
 import Accounts from './Accounts.jsx';
 
 const router = createBrowserRouter([
@@ -83,6 +84,7 @@ const router = createBrowserRouter([
       },
     ],
   },
+ 
 ]);
 
 ReactDOM.createRoot(document.getElementById('root')).render(

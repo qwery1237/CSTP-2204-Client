@@ -5,10 +5,10 @@ import { useNavigate } from 'react-router-dom';
 
 export default function SignoutBtn() {
   const [confirm, setConfirm] = useState();
-  const { setUserData } = useAuth();
+  const { updateUserData } = useAuth();
   const navigate = useNavigate();
   const handleLogout = async () => {
-    await setUserData();
+    await updateUserData();
     navigate('/');
   };
   return (

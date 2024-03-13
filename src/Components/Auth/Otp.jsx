@@ -2,22 +2,21 @@ import { useState, useEffect } from 'react';
 import OtpInput from 'react-otp-input';
 import CloseIcon from '@mui/icons-material/Close';
 import Loading from '../UI/Loading';
-import { createAccount, otpResend, otpValidation } from '../../api/auth';
+import {
+  addAccountInitialData,
+  otpResend,
+  otpValidation,
+} from '../../api/auth';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
 export default function Otp({ email, setShowModal }) {
+  const { updateUserData } = useAuth();
+  const navigate = useNavigate();
+
   const [otp, setOtp] = useState('');
   const [timer, setTimer] = useState(9);
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (timer == 0) return;
-    setTimeout(() => {
-      setTimer((prev) => prev - 1);
-    }, 1000);
-  }, [timer]);
 
   const resendHandler = async () => {
     setOtp('');
@@ -35,11 +34,6 @@ export default function Otp({ email, setShowModal }) {
       console.error('Network error:', error);
     }
   };
-  useEffect(() => {
-    if (otp.length === 4) {
-      submitOtp();
-    }
-  }, [otp]);
 
   const submitOtp = async () => {
     setIsLoading(true);
@@ -52,13 +46,14 @@ export default function Otp({ email, setShowModal }) {
         return;
       }
       alert('Email was successfully verified');
-      const { success, token, error: e } = await createAccount(email);
+      const { token, error: e } = await addAccountInitialData(email);
       if (e) {
         setError(e);
         setIsLoading(false);
         return;
       }
-      // get userData and redirect to home
+      await updateUserData(token);
+      navigate('/home');
     } catch (e) {
       setIsLoading(false);
       setError(e);
@@ -68,6 +63,20 @@ export default function Otp({ email, setShowModal }) {
     setOtp();
     setShowModal(false);
   };
+
+  useEffect(() => {
+    if (timer == 0) return;
+    setTimeout(() => {
+      setTimer((prev) => prev - 1);
+    }, 1000);
+  }, [timer]);
+
+  useEffect(() => {
+    if (otp.length === 4) {
+      submitOtp();
+    }
+  }, [otp]);
+
   return (
     <>
       <div className=' relative z-[2] h-full cursor-default'>

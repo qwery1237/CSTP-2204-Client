@@ -15,6 +15,7 @@ import Frame from './Frame';
 import ProfileSetting from './ProfileSetting';
 import ShareLink from './ShareLink';
 import ContactUs from './ContactUs/ContactUs';
+import { useAuth } from '../../context/AuthContext';
 
 const CONTENTS = [
   { title: 'Account Info', element: <ProfileSetting /> },
@@ -59,6 +60,7 @@ const SIDEBARACTIONS = [
 ];
 export default function Profile() {
   const navigate = useNavigate();
+
   const [crrAction, setCrrAction] = useState();
   const [helpDataId, setHelpDataId] = useState(null);
 

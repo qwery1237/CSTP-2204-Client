@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 import { useAuth } from '../../context/AuthContext';
 
@@ -14,6 +14,7 @@ export default function UserInfo({ handleActionChange }) {
     crrEXP: 15,
     requiredEXP: 75,
   });
+
   return (
     <>
       <div className='p-2 pb-0 w-full mb-6 caret-transparent'>
