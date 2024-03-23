@@ -1,16 +1,16 @@
-import React, { useEffect } from "react";
+import { useEffect } from 'react';
 
-export default function BgBlackOpacity({ isTransparent = false ,children}) {
+export default function BgBlackOpacity({ isTransparent = false, children }) {
   const toggleBodyScroll = (enableScroll) => {
     const body = document.body;
     const html = document.documentElement;
 
     if (enableScroll) {
-      body.style.overflow = "visible";
-      html.style.overflow = "visible";
+      body.style.overflow = 'visible';
+      html.style.overflow = 'visible';
     } else {
-      body.style.overflow = "hidden";
-      html.style.overflow = "hidden";
+      body.style.overflow = 'hidden';
+      html.style.overflow = 'hidden';
     }
   };
 
@@ -23,8 +23,12 @@ export default function BgBlackOpacity({ isTransparent = false ,children}) {
   }, []);
 
   return (
-    <div   className={` absolute top-0 right-0 w-screen h-screen ${isTransparent ? "bg-transparent" : "bg-[rgb(1,1,1,0.5)]"}  z-[39]`}>
-    {children}
+    <div
+      className={` fixed top-0 right-0 w-screen h-screen ${
+        isTransparent ? 'bg-transparent' : 'bg-[rgb(1,1,1,0.5)]'
+      }  z-10`}
+    >
+      {children}
     </div>
   );
 }

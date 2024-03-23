@@ -2,8 +2,9 @@ import React, { useEffect, useRef, useState } from 'react';
 import { GoogleMap, Marker, DirectionsRenderer } from '@react-google-maps/api';
 import stationMarke from '/station.png';
 
-export default function StationMapDistance({ setDistance, setDuration }) {
+export default function StationMapDistance({ setDistance, setDuration , latlng,userLatLng}) {
   const mapRef = useRef(null);
+  
   const [directions, setDirections] = useState(null);
   const [count, setCount] = useState(0);
   const mapStyle = [
@@ -91,6 +92,7 @@ export default function StationMapDistance({ setDistance, setDuration }) {
       stylers: [{ color: '#17263c' }],
     },
   ];
+ 
   const mapOptions = {
     disableDefaultUI: true,
     styles: mapStyle,
@@ -104,34 +106,15 @@ export default function StationMapDistance({ setDistance, setDuration }) {
     outline: 'none',
   };
   const initialPosition = {
-    lat: 49.258347,
-    lng: -123.076953,
+    lat: userLatLng.lat,
+    lng: userLatLng.lng,
   };
   const markerposition = {
-    lat: 49.278774,
-    lng: -123.109445,
+    lat: latlng.latitude,
+    lng: latlng.longitude,
   };
-  useEffect(() => {
-    getThirdGmStyleChild();
-  }, []);
-  const getThirdGmStyleChild = async () => {
-    const gmStyleElements = document.querySelectorAll('.gm-style');
+ 
 
-    if (gmStyleElements.length === 0) {
-      if (count < 5) {
-        setCount((prev) => prev + 1);
-        await sleep(1000);
-        getThirdGmStyleChild();
-      }
-    }
-
-    const thirdGmStyleElement = gmStyleElements[0].children[2];
-
-    thirdGmStyleElement.style.border = '0px';
-  };
-  function sleep(ms) {
-    return new Promise((resolve) => setTimeout(resolve, ms));
-  }
 
   useEffect(() => {
     calculateDirections();
@@ -159,7 +142,6 @@ export default function StationMapDistance({ setDistance, setDuration }) {
           const distance = result.routes[0].legs[0].distance.text;
           const duration = result.routes[0].legs[0].duration.text;
 
-          console.log(result.routes[0].legs[0]);
           setDistance(distance);
           setDuration(duration);
         } else {

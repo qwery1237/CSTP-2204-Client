@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import CustomInput from '../Components/UI/CustomInput';
 import { MdOutlineMail } from 'react-icons/md';
 import CustomButton from '../Components/UI/CustomButton';

@@ -1,14 +1,55 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import CloseIcon from '@mui/icons-material/Close';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
+import { addToFavorite, deleteFromFavorite } from '../../api/user';
 
-export default function StationInfo({ setShowStationInfo, target }) {
+export default function StationInfo({
+  setShowStationInfo,
+  target,
+  preferences,
+}) {
   const navigate = useNavigate();
-  const isFavourite = false;
-  const rating = 4.3;
-  const { _id: id, name, profileImg, distanceFromUser, address } = target;
+  const { user, token, updateUserData } = useAuth();
+  const { placeId: id, name, profileImg, distanceFromUser, address } = target;
+
+  const [isFavorite, setIsfavorite] = useState();
+  const [rating, setRating] = useState();
+  const [totalRating, setTotalRating] = useState();
+  const [fuelPrice, setFuelPrice] = useState();
+  const [fuelType, setFuelType] = useState();
+
+  useEffect(() => {
+    setIsfavorite(user.favourite?.includes(id));
+    setRating(target.fuelGoRating.rating);
+    setTotalRating(target.fuelGoRating.totalRating);
+    setFuelPrice(Object.values(target.price)[preferences[2]].price || '- -');
+    const type = Object.keys(target.price)[preferences[2]];
+    type == 'midGrade' ? setFuelType('mid-grade') : setFuelType(type);
+  }, [target, preferences]);
+
+  const handleAddFavorite = async () => {
+    const { success, message } = await addToFavorite(token, id);
+
+    if (!success) {
+      alert(message);
+      return;
+    }
+    setIsfavorite(true);
+    await updateUserData(token);
+  };
+  const handleDeleteFavorite = async () => {
+    const { success, message } = await deleteFromFavorite(token, id);
+
+    if (!success) {
+      alert(message);
+      return;
+    }
+    setIsfavorite(false);
+    await updateUserData(token);
+  };
   return (
     <div className=' absolute bottom-4 left-4 w-[300px] bg max-[520px]:rounded-none rounded-lg z-[1] max-[520px]:w-full max-[520px]:bottom-0 max-[520px]:left-0'>
       <div className=' caret-transparent w-full rounded-lg max-[520px]:rounded-none border-[1px] max-[520px]:border-0 cborder flex justify-between p-4 '>
@@ -30,8 +71,12 @@ export default function StationInfo({ setShowStationInfo, target }) {
               src={profileImg}
               alt=''
             />
-            <div className=' absolute top-0 right-0  p-2 rounded-full cursor-pointer th'>
-              {isFavourite ? <FavoriteIcon /> : <FavoriteBorderIcon />}
+            <div className=' absolute top-0 right-0  p-2 rounded-full cursor-pointer text-darkMode-error'>
+              {isFavorite ? (
+                <FavoriteIcon onClick={handleDeleteFavorite} />
+              ) : (
+                <FavoriteBorderIcon onClick={handleAddFavorite} />
+              )}
             </div>
           </div>
           <div className=' flex flex-col justify-center pt-2 '>
@@ -49,7 +94,8 @@ export default function StationInfo({ setShowStationInfo, target }) {
               </div>
               <div className=' flex flex-row justify-between'>
                 <div className='tp flex flex-row text-sm'>
-                  <div className=''>$1.23/</div> Regular
+                  <div className=''>$ {fuelPrice}/</div>
+                  <div>{fuelType}</div>
                 </div>
                 <div
                   onClick={() =>

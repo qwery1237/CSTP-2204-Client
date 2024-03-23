@@ -1,7 +1,7 @@
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import GoogleLoginBtn from './GoogleLoginBtn';
 
-export default function GoogleLogin() {
+export default function GoogleLogin({setPasswordError}) {
   return (
     <>
       <div className='w-full relative mt-1'>
@@ -20,7 +20,7 @@ export default function GoogleLogin() {
         </div>
       </div>
       <GoogleOAuthProvider clientId='698921458629-k410ff2u0hnkl6bap113t8f9vepj8eoq.apps.googleusercontent.com'>
-        <GoogleLoginBtn />
+        <GoogleLoginBtn  setPasswordError={setPasswordError} />
       </GoogleOAuthProvider>
     </>
   );

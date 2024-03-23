@@ -1,38 +1,74 @@
-import React from 'react';
-import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
+import React, { useEffect, useState } from "react";
+import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
 
-export default function ContributorList({ isMonth }) {
-  const array = [1, 2, 3, 4, 5];
+export default function ContributorList({
+  isMonth,
+  month,
+  year,
+  monthContributers,
+  yearContributers,
+}) {
+  const [contributers, setContributers] = useState(null);
+  useEffect(() => {
+    if (isMonth) {
+      
+      let arr = [];
+     
+      if (monthContributers) {
+      
+        arr = [...monthContributers];
+   
+      }
+
+      for (let i = 0; i < 5; i++) {
+        arr.push({ name: "- -", points: 0 });
+      }
+     
+      setContributers(arr);
+    } else {
+      let arr = [];
+      if (yearContributers) {
+        arr = [...yearContributers];
+      }
+      for (let i = 0; i < 5; i++) {
+        arr.push({ name: "- -", points: 0 });
+      }
+     
+      setContributers(arr);
+    }
+  }, [monthContributers, yearContributers]);
   return (
-    <div className=' flex-1 rounded-lg border-[1px] cborder th'>
-      <div className=' p-4 text-end text-lg'>
-        {isMonth ? 'February' : '2024'}
-      </div>
+    <div className=" flex-1 rounded-lg border-[1px] cborder th">
+      <div className=" p-4 text-end text-lg">{isMonth ? month : year}</div>
 
-      {array.map((item) => {
-        return (
-          <div
-            key={'contributer' + item}
-            className=' flex-1 flex flex-row justify-between items-center p-2 border-t-[1px] cborder'
-          >
-            {item <= 3 ? (
-              <div className=' flex flex-row gap-x-1 items-center'>
-                <div> {item} </div>{' '}
-                <div
-                  className={`${item === 1 && 'text-[#ffd700]'} ${
-                    item === 2 && 'text-[#c0c0c0]'
-                  } ${item === 3 && 'text-[#CD7F32]'}`}
-                >
-                  <EmojiEventsIcon sx={{ fontSize: 18 }} />
+      {contributers &&
+        contributers.map((item, i) => {
+          if(i > 4){
+            return null
+          }
+          return (
+            <div
+              key={"contributer" + i}
+              className=" flex-1 flex flex-row justify-between items-center p-2 border-t-[1px] cborder"
+            >
+              {i <= 2 ? (
+                <div className=" flex flex-row gap-x-1 items-center">
+                  <div> {item.points} </div>{" "}
+                  <div
+                    className={`${i === 0 && "text-[#ffd700]"} ${
+                      i === 1 && "text-[#c0c0c0]"
+                    } ${i === 2 && "text-[#CD7F32]"}`}
+                  >
+                    <EmojiEventsIcon sx={{ fontSize: 18 }} />
+                  </div>
                 </div>
-              </div>
-            ) : (
-              <div> {item}</div>
-            )}
-            <div>Harinder</div>
-          </div>
-        );
-      })}
+              ) : (
+                <div> {item.points}</div>
+              )}
+              <div>{item.name}</div>
+            </div>
+          );
+        })}
     </div>
   );
 }

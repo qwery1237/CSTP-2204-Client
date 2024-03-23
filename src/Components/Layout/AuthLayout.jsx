@@ -117,7 +117,7 @@ export default function AuthLayout({ children }) {
               >
                 <div className='screen-image'></div>
                 <div className='screen-overlay'></div>
-                <div className=' absolute z-30 top-0 w-full h-full p-4'>
+                <div className=' absolute z-[5] top-0 w-full h-full p-4'>
                   <div className='w-full h-full border-[3px] border-lightMode-border rounded-lg flex flex-col items-center justify-end'>
                     <WhatshotIcon
                       sx={{ color: 'rgb(14,165,233)', fontSize: '100px' }}

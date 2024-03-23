@@ -2,16 +2,13 @@ import { format } from 'timeago.js';
 import PersonIcon from '@mui/icons-material/Person';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 
-export default function GasPrice({ gasInfo, setModal }) {
+export default function GasPrice({ gasInfo, setShowModal }) {
   return (
     <div className='w-full p-4 max-[630px]:px-2  mt-4'>
       <div className=' flex flex-row justify-between items-center th'>
         {' '}
         <div className='th text-2xl'>Gas prices</div>
-        <div
-          onClick={() => setModal({ show: true, title: 'price' })}
-          className=' cursor-pointer'
-        >
+        <div onClick={() => setShowModal(true)} className=' cursor-pointer'>
           <EditOutlinedIcon />
         </div>
       </div>
@@ -39,7 +36,7 @@ export default function GasPrice({ gasInfo, setModal }) {
               <div className=' w-full justify-center  tp text-sm flex flex-row gap-x-1 items-center'>
                 <PersonIcon sx={{ fontSize: 16 }} /> <div> {updatedBy}</div>
               </div>
-              <div className=' text-xs tp'>{format(updatedAt)}</div>
+              <div className=' text-xs tp'>{updatedAt}</div>
             </li>
           );
         })}

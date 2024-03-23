@@ -1,4 +1,3 @@
-import React from 'react';
 import { useAuth } from '../../context/AuthContext';
 
 export default function SidebarActiveBtn({ setIsProfilePopUpHandler }) {
@@ -6,7 +5,7 @@ export default function SidebarActiveBtn({ setIsProfilePopUpHandler }) {
   return (
     <div
       style={{
-        backgroundImage: 'url("/frame/level5.jpg")',
+        backgroundImage: `url(${user?.frame})`,
         backgroundSize: 'cover', // Adjust as needed
 
         backgroundPosition: 'center', // Adjust as needed
@@ -17,7 +16,7 @@ export default function SidebarActiveBtn({ setIsProfilePopUpHandler }) {
       <img
         onClick={setIsProfilePopUpHandler}
         className='size-9 rounded-full  cursor-pointer object-cover relative'
-        src={user.profileImg}
+        src={user?.profileImg}
         alt=''
       />
     </div>

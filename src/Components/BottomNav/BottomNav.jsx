@@ -21,7 +21,7 @@ export default function BottomNav() {
   });
 
   return (
-    <nav className='w-full min-[520px]:hidden '>
+    <nav className='w-full min-[520px]:hidden absolute bottom-0'>
       <ul className='h-[56px] w-full flex flex-row justify-evenly items-center sbg border-t-[1px] cborder'>
         {navList.map(({ path, icon, isActive }) => (
           <div

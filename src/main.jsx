@@ -1,4 +1,3 @@
-import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App.jsx';
 import './index.css';
@@ -14,8 +13,9 @@ import Rewards from './Screen/Rewards.jsx';
 import GasStation from './Screen/GasStation.jsx';
 import ProfileScreen from './Screen/ProfileScreen.jsx';
 import SearchScreen from './Screen/SearchScreen.jsx';
-
 import Accounts from './Accounts.jsx';
+import { AuthProvider } from './context/AuthContext.jsx';
+import InviteFriend from './Screen/InviteFriend.jsx';
 
 const router = createBrowserRouter([
   {
@@ -58,6 +58,10 @@ const router = createBrowserRouter([
     element: <ProfileScreen />,
   },
   {
+    path: 'invite/:id',
+    element: <InviteFriend />,
+  },
+  {
     path: '/accounts',
     element: <Accounts />,
     children: [
@@ -78,15 +82,13 @@ const router = createBrowserRouter([
         path: 'changepassword/:id',
         element: <ChangePassWord />,
       },
-      {
-        path: 'profile',
-        element: <ProfileScreen />,
-      },
+      
     ],
   },
- 
 ]);
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <RouterProvider router={router} />
+  <AuthProvider>
+    <RouterProvider router={router} />
+  </AuthProvider>
 );

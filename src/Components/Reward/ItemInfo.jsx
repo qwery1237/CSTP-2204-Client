@@ -1,21 +1,36 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { MdClose } from 'react-icons/md';
 import { SiPix } from 'react-icons/si';
 import RewardCardDetails from './RewardCardDetails';
 import CustomButton from '../UI/CustomButton';
+import { useAuth } from '../../context/AuthContext';
+import { purchaseItem } from '../../api/reward';
 
 export default function ItemInfo({ point, setPoint, setShowModal, modal }) {
-  const [isPurchased, setIsPurchased] = useState(false);
-  const { title, amount, card, price, isAvailable } = modal;
-
+  const { user, token, updateUserData } = useAuth();
+  const { itemId, title, amount, card, price = 25, type } = modal;
+  const isAvailable = price <= point;
+  const [result, setResult] = useState();
   const handleClick = () => {
     setShowModal(false);
-    setIsPurchased(false);
   };
   const getCoupon = () => {
+    if (!isAvailable) return;
+    if (type == 'frame' && user.framesOwned?.includes(itemId)) {
+      setResult('Frame already purchased');
+      return;
+    }
+    if (type == 'avatar' && user.avatarOwned?.includes(itemId)) {
+      setResult('Avatar already purchased');
+      return;
+    }
+
+    purchaseItem(type, { id: itemId, giftCardType: title, amount }, token)
+      .then(setResult)
+      .catch(alert)
+      .finally(() => updateUserData(token));
     const balance = point - price;
     setPoint(balance);
-    setIsPurchased(true);
   };
 
   return (
@@ -36,10 +51,8 @@ export default function ItemInfo({ point, setPoint, setShowModal, modal }) {
           isAvailable={isAvailable}
         />
       </div>
-      {isPurchased ? (
-        <div className=' mt-8 text-white leading-relaxed'>
-          Order placed. Check email !
-        </div>
+      {result ? (
+        <div className=' mt-8 text-white leading-relaxed'>{result}</div>
       ) : (
         <>
           <div className='h-8'></div>
@@ -50,7 +63,7 @@ export default function ItemInfo({ point, setPoint, setShowModal, modal }) {
             width='192px'
             fontSize='base'
           >
-            {isAvailable ? `Get ${modal.type}` : 'NOT ENOUGH UNIT'}
+            {isAvailable ? `GET ${type.toUpperCase()}` : 'NOT ENOUGH UNIT'}
           </CustomButton>
         </>
       )}

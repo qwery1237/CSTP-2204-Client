@@ -13,7 +13,59 @@ export const getGasStations = async (userLatLng) => {
     }
     return data;
   } catch (error) {
-    console.error('Network error:', error);
+    throw new Error(error.message);
+  }
+};
+export const getFavouriteStations = async (stations, token) => {
+  try {
+    const { lat, lng } = await getCrrLocation();
+    const response = await axios.post(
+      serverLink + '/user/getfavouritestations',
+      { stations, lat, lng },
+      {
+        headers: {
+          Authorization: 'Bearer ' + token,
+        },
+      }
+    );
+
+    const { success, message, data } = response.data;
+    if (!success) throw new Error(message);
+    return data;
+  } catch (error) {
+    console.log(error);
+    throw new Error(error.message);
+  }
+};
+export const getGasStationById = async (placeId, token) => {
+  try {
+    const response = await axios.get(
+      serverLink + '/user/getgasstationdata/' + placeId,
+      {
+        headers: {
+          Authorization: 'Bearer ' + token,
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    throw new Error(error.message);
+  }
+};
+export const getFavoriteStations = async (
+  locationList,
+  token,
+  setFavourites
+) => {
+  setFavourites([]);
+  try {
+    locationList.forEach(async (placeId) => {
+      const stationInfo = await getGasStationById(placeId, token);
+
+      setFavourites((prev) => [...prev, stationInfo]);
+    });
+  } catch (error) {
+    throw new Error(error.message);
   }
 };
 export const getCrrLocation = async () => {

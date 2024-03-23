@@ -1,5 +1,3 @@
-import React from 'react';
-
 export default function Loading(bgColor) {
   const bgCSS = bgColor || 'bg-[rgba(0,0,0,0.5)]';
   return (

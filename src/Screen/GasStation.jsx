@@ -1,91 +1,204 @@
-import { useState } from 'react';
-import PollOutlinedIcon from '@mui/icons-material/PollOutlined';
-import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
-import SideBar from '../Components/SideBar/SideBar';
-import BgBlackOpacity from '../Components/BgBlackOpacity';
-import TopNav from '../Components/TopNav/TopNav';
-import ModalContent from '../Components/StationDetail/ModalContent';
-import StationInfo from '../Components/StationDetail/StationInfo';
-import GasPrice from '../Components/StationDetail/GasPrice';
-import Amenities from '../Components/StationDetail/Amenities';
-import Contributor from '../Components/StationDetail/Contributor/Contributor';
-import CommentSection from '../Components/StationDetail/CommentSection/CommentSection';
-import Modal from '../Components/UI/Modal';
-import { useLocation } from 'react-router-dom';
+import { useEffect, useState } from "react";
+import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
+import SideBar from "../Components/SideBar/SideBar";
+import TopNav from "../Components/TopNav/TopNav";
+import ModalContent from "../Components/StationDetail/ModalContent";
+import StationInfo from "../Components/StationDetail/StationInfo";
+import GasPrice from "../Components/StationDetail/GasPrice";
+import Amenities from "../Components/StationDetail/Amenities";
+import Contributor from "../Components/StationDetail/Contributor/Contributor";
+import CommentSection from "../Components/StationDetail/CommentSection/CommentSection";
+
+import { getGasStationById } from "../api/gasStation";
+import { useAuth } from "../context/AuthContext";
+import Loading from "../Components/UI/Loading";
+import BgBlackOpacity from "../Components/BgBlackOpacity";
 
 export default function GasStation() {
-  const { station } = useLocation().state;
   const [isProfilePopUp, setIsProfilePopUp] = useState(false);
-  const [modal, setModal] = useState({});
+  const [showModal, setShowModal] = useState();
+  const [placeId, setPlaceId] = useState(null);
+  const [station, setStation] = useState(null);
+  const [timestamp, setTimestamp] = useState(null);
+  const { user, token, updateUserData } = useAuth();
   const [gasInfo, setGasInfo] = useState([
     {
-      type: 'Regular',
-      price: 1.62,
-      updatedBy: 'Harinder',
-      updatedAt: new Date().setDate(new Date().getDate() - 3),
+      type: "Regular",
+      price: " - -",
+      updatedBy: "- -",
+      updatedAt: "Not updated",
     },
     {
-      type: 'Mid-grade',
-      price: 1.72,
-      updatedBy: 'Jinsoo',
-      updatedAt: new Date().setHours(new Date().getHours() - 5),
+      type: "Mid-grade",
+      price: " - -",
+      updatedBy: "- -",
+      updatedAt: "Not updated",
     },
     {
-      type: 'Premium',
-      price: 1.76,
-      updatedBy: 'Prab',
-      updatedAt: new Date().setMinutes(new Date().getMinutes() - 7),
+      type: "Premium",
+      price: " - -",
+      updatedBy: "- -",
+      updatedAt: "Not updated",
     },
     {
-      type: 'Diesel',
-      price: 1.78,
-      updatedBy: 'Laghav',
-      updatedAt: Date.now(),
+      type: "Diesel",
+      price: " - -",
+      updatedBy: "- -",
+      updatedAt: "Not updated",
     },
   ]);
 
-  const handleModal = (title) => {
-    setModal({ show: true, title });
+  useEffect(() => {
+    const path = window.location.pathname;
+    const parts = path.split("/");
+    const lastPart = parts[parts.length - 1];
+    setPlaceId(lastPart);
+  }, []);
+  
+  useEffect(() => {
+    if (station && station.price) {
+      if (station.price.regular.price && station.price.regular.price > 0) {
+        const updatedAgo = getUpdatedAgo(station.price.regular.timeStamp);
+
+        updateGasInfo({
+          type: "Regular",
+          price: station.price.regular.price,
+          updatedBy: station.price.regular.name,
+          updatedAt: updatedAgo,
+        });
+      }
+      if (station.price.midGrade.price && station.price.midGrade.price > 0) {
+        const updatedAgo = getUpdatedAgo(station.price.midGrade.timeStamp);
+
+        updateGasInfo({
+          type: "Mid-grade",
+          price: station.price.midGrade.price,
+          updatedBy: station.price.midGrade.name,
+          updatedAt: updatedAgo,
+        });
+      }
+      if (station.price.premium.price && station.price.premium.price > 0) {
+        const updatedAgo = getUpdatedAgo(station.price.premium.timeStamp);
+
+        updateGasInfo({
+          type: "Premium",
+          price: station.price.premium.price,
+          updatedBy: station.price.premium.name,
+          updatedAt: updatedAgo,
+        });
+      }
+      if (station.price.diesel.price && station.price.diesel.price > 0) {
+        const updatedAgo = getUpdatedAgo(station.price.diesel.timeStamp);
+
+        updateGasInfo({
+          type: "Diesel",
+          price: station.price.diesel.price,
+          updatedBy: station.price.diesel.name,
+          updatedAt: updatedAgo,
+        });
+      }
+    }
+  }, [station, timestamp]);
+  const updateGasInfo = (updatedGas) => {
+    setGasInfo((prevGasInfo) => {
+      return prevGasInfo.map((gas) => {
+        if (gas.type === updatedGas.type) {
+          return updatedGas;
+        }
+        return gas;
+      });
+    });
   };
-  // ToDo get gasInfo from real database
+
+  function getUpdatedAgo(time) {
+    const timeDifferenceInSeconds = Math.floor((timestamp - time) / 1000);
+    let timeDifference = "";
+
+    if (timeDifferenceInSeconds < 60) {
+      timeDifference = `${timeDifferenceInSeconds} sec ago`;
+    } else if (timeDifferenceInSeconds < 3600) {
+      timeDifference = `${Math.floor(timeDifferenceInSeconds / 60)} min ago`;
+    } else if (timeDifferenceInSeconds < 86400) {
+      timeDifference = `${Math.floor(timeDifferenceInSeconds / 3600)} hr ago`;
+    } else if (timeDifferenceInSeconds < 2592000) {
+      timeDifference = `${Math.floor(timeDifferenceInSeconds / 86400)} day ago`;
+    } else if (timeDifferenceInSeconds < 31536000) {
+      timeDifference = `${Math.floor(
+        timeDifferenceInSeconds / 2592000
+      )} month ago`;
+    } else {
+      timeDifference = `${Math.floor(
+        timeDifferenceInSeconds / 31536000
+      )} year ago`;
+    }
+    return timeDifference;
+  }
+
+  useEffect(() => {
+    if (token && placeId) {
+      getStationData();
+    }
+  }, [token, placeId]);
+  const getStationData = async () => {
+    try {
+      const { data, currentTimestamp } = await getGasStationById(
+        placeId,
+        token
+      );
+
+      setStation(data);
+      setTimestamp(currentTimestamp);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  if (!station) {
+    return <Loading bgColor="bg-inherit" />;
+  }
+
+  // TODO: get gasInfo from real database
   // add useEffect for all the info
   return (
     <>
-      {modal.show && (
+      {showModal && (
         <Modal>
           <ModalContent
-            title={modal.title}
-            setModal={setModal}
+            station={station}
+            token={token}
+            setShowModal={setShowModal}
             gasInfo={gasInfo}
+            setStation={setStation} setTimestamp={setTimestamp} 
+            updateUserData={updateUserData}
           />
         </Modal>
       )}
       <TopNav setIsProfilePopUp={setIsProfilePopUp}>
         <div
-          onClick={() => handleModal('price')}
-          name='price'
-          className=' flex flex-row items-center tp w-[100px] justify-center gap-x-1 cursor-pointer hover:text-white max-[740px]:w-10 '
+          onClick={() => {
+            setShowModal(true);
+          }}
+          name="price"
+          className=" flex flex-row items-center tp w-[100px] justify-center gap-x-1 cursor-pointer hover:text-white"
         >
           <EditOutlinedIcon />
-          <div className=' max-[740px]:hidden'>Price</div>
-        </div>
-        <div className='h-full cborder border-l-[1px]'></div>
-        <div
-          name='survey'
-          onClick={() => handleModal('survey')}
-          className=' flex flex-row items-center tp w-[100px] justify-center gap-x-1 cursor-pointer hover:text-white max-[740px]:w-10   '
-        >
-          <PollOutlinedIcon />
-          <div className=' max-[740px]:hidden'>Survey</div>
+          <div>Price</div>
         </div>
       </TopNav>
-      <div className=' flex-1 flex-col overflow-auto mt-3'>
-        <StationInfo setModal={setModal} station={station} />
-        <GasPrice gasInfo={gasInfo} setModal={setModal} />
-        <Amenities />
-        <Contributor />
+      <div className=" flex-1 flex-col overflow-auto mt-3">
+        <StationInfo placeId={placeId} station={station} />
+        <GasPrice gasInfo={gasInfo} setShowModal={setShowModal} />
+        <Amenities station={station} />
+        <Contributor   station={station}/>
 
-        <CommentSection />
+        <CommentSection
+          timestamp={timestamp}
+          setTimestamp={setTimestamp}
+          setStation={setStation}
+          token={token}
+          user={user}
+          station={station}
+        />
       </div>
 
       {isProfilePopUp && (
@@ -93,4 +206,7 @@ export default function GasStation() {
       )}
     </>
   );
+}
+function Modal({ children }) {
+  return <BgBlackOpacity>{children}</BgBlackOpacity>;
 }

@@ -2,14 +2,13 @@ import { useGoogleLogin } from '@react-oauth/google';
 import CustomButton from '../UI/CustomButton';
 import googleImg from '/google.png';
 import {
-  addAccountInitialData,
   googleLogin,
   loginWithGoogleAccount,
 } from '../../api/auth';
 import { useAuth } from '../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 
-export default function GoogleLoginBtn() {
+export default function GoogleLoginBtn({setPasswordError}) {
   const { updateUserData } = useAuth();
   const navigate = useNavigate();
 
@@ -18,24 +17,30 @@ export default function GoogleLoginBtn() {
       const token = res.access_token;
 
       try {
-        const googleAccount = await googleLogin(token);
-        const result = await loginWithGoogleAccount(googleAccount);
+        const {name,email,picture} = await googleLogin(token);
+     
+         const result = await loginWithGoogleAccount(name,email,picture);
 
         if (result.error) {
-          alert(result.error);
+          setPasswordError(result.error);
           return;
         }
-
-        if (!result.token) {
-          const userData = await addAccountInitialData(googleAccount);
-
-          await updateUserData(userData.token);
-          navigate('/home');
-          return;
+        if(result.success){
+          localStorage.setItem("token", JSON.stringify(result.token))
+          navigate('/home')
         }
+        
 
-        await updateUserData(result.token);
-        navigate('/home');
+        // if (!result.token) {
+        //   // const userData = await addAccountInitialData(googleAccount);
+
+        //   // await updateUserData(userData.token);
+        //   // navigate('/home');
+        //   return;
+        // }
+
+        // await updateUserData(result.token);
+        // navigate('/home');
       } catch (e) {
         alert(e.message);
       }

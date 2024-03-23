@@ -9,8 +9,8 @@ export const emailSignUp = async (email, password, isAgreedToTerms) => {
       isAgreedToTerms,
     });
     return response.data;
-  } catch (e) {
-    throw new Error(e);
+  } catch (error) {
+    throw new Error(error.message);
   }
 };
 
@@ -21,8 +21,8 @@ export const otpValidation = async (email, otp) => {
       otp,
     });
     return response.data;
-  } catch (e) {
-    throw new Error(e);
+  } catch (error) {
+    throw new Error(error.message);
   }
 };
 
@@ -32,26 +32,26 @@ export const otpResend = async (email) => {
       email,
     });
     return response.data;
-  } catch (e) {
-    throw new Error(e);
+  } catch (error) {
+    throw new Error(error.message);
   }
 };
 
-export const addAccountInitialData = async (email) => {
-  const name = email.split('@')[0];
-  const profileImg = '/profileDefault.jpg';
+// export const addAccountInitialData = async (email) => {
+//   const name = email.split('@')[0];
+//   const profileImg = '/profileDefault.jpg';
 
-  try {
-    const response = await axios.post(serverLink + '/auth/adduserdata', {
-      email,
-      name,
-      profileImg,
-    });
-    return response.data;
-  } catch (e) {
-    throw new Error(e);
-  }
-};
+//   try {
+//     const response = await axios.post(serverLink + '/auth/adduserdata', {
+//       email,
+//       name,
+//       profileImg,
+//     });
+//     return response.data;
+//   } catch (e) {
+//     throw new Error(e);
+//   }
+// };
 export const emailLogin = async (email, password) => {
   try {
     const response = await axios.post(serverLink + '/auth/emaillogin', {
@@ -59,11 +59,12 @@ export const emailLogin = async (email, password) => {
       password,
     });
     return response.data;
-  } catch (e) {
-    throw new Error(e);
+  } catch (error) {
+    throw new Error(error.message);
   }
 };
 export const googleLogin = async (token) => {
+  
   try {
     const response = await axios.get(
       `https://www.googleapis.com/oauth2/v1/userinfo?access_token=${token}`,
@@ -74,20 +75,28 @@ export const googleLogin = async (token) => {
         },
       }
     );
-    const email = response.data.email;
-    return email;
+    const data = response.data;
+    return data;
   } catch (error) {
-    throw new Error(error);
+    throw new Error(error.message);
   }
 };
-export const loginWithGoogleAccount = async (googleAccount) => {
+export const loginWithGoogleAccount = async (name,email,picture) => {
+  let invite = ""
+  if(localStorage.getItem("inviteToken")){
+     invite = JSON.parse(localStorage.getItem("inviteToken"))
+  }
   try {
     const response = await axios.post(serverLink + '/auth/oauth', {
-      email: googleAccount,
+      email: email,
+      name: name,
+      picture: picture,
+      invite: invite
     });
-    return response.data;
+    
+     return response.data;
   } catch (error) {
-    throw new Error(error);
+    throw new Error(error.message);
   }
 };
 export const sendchangePasswordEmail = async (email) => {
@@ -97,7 +106,7 @@ export const sendchangePasswordEmail = async (email) => {
     });
     return response.data;
   } catch (error) {
-    throw new Error(error);
+    throw new Error(error.message);
   }
 };
 export const changePassword = async (id, password, confirmPassword) => {
@@ -110,20 +119,6 @@ export const changePassword = async (id, password, confirmPassword) => {
 
     return response.data;
   } catch (error) {
-    throw new Error(error);
-  }
-};
-export const getUserData = async (token, setUser) => {
-  try {
-    const response = await axios.get(serverLink + '/user/getuserdata', {
-      headers: {
-        Authorization: 'Bearer ' + token,
-      },
-    });
-    const userData = response.data.data;
-    setUser(userData);
-    return userData;
-  } catch (e) {
-    throw new Error(e);
+    throw new Error(error.message);
   }
 };

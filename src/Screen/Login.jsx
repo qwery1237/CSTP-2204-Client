@@ -1,30 +1,26 @@
-import React, { useState } from 'react';
-import CustomInput from '../Components/UI/CustomInput';
-import { MdLockOutline, MdOutlineMail } from 'react-icons/md';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import CustomButton from '../Components/UI/CustomButton';
-import { GoogleOAuthProvider } from '@react-oauth/google';
-import GoogleLoginBtn from '../Components/Login/GoogleLoginBtn';
 import { emailLogin } from '../api/auth';
 import { useAuth } from '../context/AuthContext';
-import { PiEyeBold, PiEyeClosedBold } from 'react-icons/pi';
-import PasswordHideBtn from '../Components/Login/PasswordHideBtn';
 import GoogleLogin from '../Components/Login/GoogleLogin';
 import LoginForm from '../Components/Login/LoginForm';
 
 export default function Login() {
   const { updateUserData } = useAuth();
+  const navigate = useNavigate();
 
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
-  const [showPassword, setShowPassword] = useState(false);
   const [emailError, setEmailError] = useState();
   const [passwordError, setPasswordError] = useState();
-  const navigate = useNavigate();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     setEmailError();
     setPasswordError();
+
     if (!email) {
       setEmailError('Email is empty');
       return;
@@ -33,6 +29,7 @@ export default function Login() {
       setPasswordError('Password is empty');
       return;
     }
+
     try {
       const { token, error, fault } = await emailLogin(email, password);
       if (error) {

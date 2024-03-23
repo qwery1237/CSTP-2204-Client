@@ -50,7 +50,7 @@ const SIDEBARACTIONS = [
     icon: <CardGiftcardOutlinedIcon sx={{ color: '#ffffff', fontSize: 25 }} />,
     subtitle: [
       'You earn 100',
-      <PixIcon sx={{ color: 'white', fontSize: 14 }} />,
+      <PixIcon key='15' sx={{ color: 'white', fontSize: 14 }} />,
     ],
   },
   {
@@ -60,6 +60,7 @@ const SIDEBARACTIONS = [
 ];
 export default function Profile() {
   const navigate = useNavigate();
+  const { user } = useAuth();
 
   const [crrAction, setCrrAction] = useState();
   const [helpDataId, setHelpDataId] = useState(null);
@@ -75,7 +76,11 @@ export default function Profile() {
 
   if (crrAction) {
     const { title, element } = crrAction;
-    const contents = React.cloneElement(element, { helpDataId, setHelpDataId });
+    const contents = React.cloneElement(element, {
+      helpDataId,
+      setHelpDataId,
+      setCrrAction,
+    });
     return (
       <>
         {!helpDataId && (
