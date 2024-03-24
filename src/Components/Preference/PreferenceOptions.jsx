@@ -1,6 +1,6 @@
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
 import BgBlackOpacity from '../BgBlackOpacity';
-import { useEffect, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { PREFERENCES } from './Preferences';
 
 export default function PreferenceOptions({
@@ -62,7 +62,7 @@ export default function PreferenceOptions({
     const popUpActive = crrPopUp == i;
 
     return (
-      <>
+      <Fragment key={title}>
         {popUpActive && (
           <div
             onClick={closePopUp}
@@ -71,7 +71,7 @@ export default function PreferenceOptions({
             <BgBlackOpacity isTransparent={true} />
           </div>
         )}
-        <div key={title} className='w-full h-fit flex flex-col items-center'>
+        <div className='w-full h-fit flex flex-col items-center'>
           {popUpActive && (
             <div className='sbg z-20 min-[521px]:mb-[-390px] rounded-lg shadow-[0px_0px_6px_#e2e8f033] dark:shadow-[2px_2px_8px_#182335]  th w-[350px] caret-transparent max-[520px]:bottom-0 max-[520px]:left-0 max-[520px]:mt-0 max-[520px]:w-screen max-[520px]:rounded-b-none max-[520px]:absolute'>
               <div className='flex justify-between text-2xl font-[500] p-4 pb-2 border-b-[1px] cborder'>
@@ -123,7 +123,7 @@ export default function PreferenceOptions({
             </div>
           )}
         </div>
-      </>
+      </Fragment>
     );
   });
 }

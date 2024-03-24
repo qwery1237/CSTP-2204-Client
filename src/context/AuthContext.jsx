@@ -5,23 +5,23 @@ import { getUserData } from '../api/user';
 export const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
-  const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')));
+  const [user, setUser] = useState();
+  const [loading, setLoading] = useState(true);
   const [token, setToken] = useState(JSON.parse(localStorage.getItem('token')));
-  const [station, setStation] = useState(null);
+
   const updateUserData = async (userToken) => {
     if (!userToken) {
       localStorage.removeItem('token');
-      localStorage.removeItem('user');
-
       setToken();
       setUser();
-
+      setLoading(false);
       return;
     }
     const crrUser = await getUserData(userToken);
 
     setToken(userToken);
     setUser(crrUser);
+    setLoading(false);
 
     localStorage.setItem('token', JSON.stringify(userToken));
   };
@@ -30,12 +30,14 @@ export function AuthProvider({ children }) {
       if (localStorage.getItem('token')) {
         const tk = JSON.parse(localStorage.getItem('token'));
         updateUserData(tk);
+      } else {
+        setLoading(false);
       }
     }
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, token, updateUserData }}>
+    <AuthContext.Provider value={{ user, token, updateUserData, loading }}>
       {children}
     </AuthContext.Provider>
   );

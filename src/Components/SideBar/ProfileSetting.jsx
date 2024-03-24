@@ -26,7 +26,6 @@ export default function ProfileSetting({ setCrrAction }) {
     if (!imgFile && !newName) return;
     setOnSave(true);
     try {
-      console.log(user);
       const { success } = await editUserInfo(
         user._id,
         token,

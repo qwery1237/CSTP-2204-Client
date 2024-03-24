@@ -8,10 +8,6 @@ import { getCrrLocation } from '../../api/gasStation';
 export default function StationMap({ preferences }) {
   const { gasStationPreference } = useContext(Context);
   const [stations, setStations] = useState();
-  useEffect(() => {
-    if (!gasStationPreference) return;
-    console.log(gasStationPreference);
-  }, [gasStationPreference]);
   //TODO:
   const [showStationInfo, setShowStationInfo] = useState(false);
   const mapRef = useRef(null);
@@ -24,6 +20,9 @@ export default function StationMap({ preferences }) {
       getLocation();
     }
   }, []);
+  useEffect(() => {
+    setShowStationInfo(false);
+  }, [preferences]);
   const getLocation = async () => {
     const crrLatLng = await getCrrLocation();
     setUserLatLng(crrLatLng);
@@ -141,6 +140,10 @@ export default function StationMap({ preferences }) {
         />
       )}
       <GoogleMap
+        onClick={() => {
+          setShowStationInfo(false);
+          setTarget();
+        }}
         ref={mapRef}
         options={mapOptions}
         mapContainerStyle={mapContainerStyle}
@@ -149,34 +152,6 @@ export default function StationMap({ preferences }) {
       >
         {gasStationPreference &&
           gasStationPreference.map((station) => {
-            // const [fuelPrice, setFuelPrice] = useState(null);
-            // useEffect(() => {
-            //   if (preferences.fuelType === 'Regular') {
-            //     if (station.price.regular.price === 0) {
-            //       setFuelPrice('--');
-            //     } else {
-            //       setFuelPrice(station.price.regular.price);
-            //     }
-            //   } else if (preferences.fuelType === 'Mid-grade') {
-            //     if (station.price.midGrade.price === 0) {
-            //       setFuelPrice('--');
-            //     } else {
-            //       setFuelPrice(station.price.midGrade.price);
-            //     }
-            //   } else if (preferences.fuelType === 'Premium') {
-            //     if (station.price.premium.price === 0) {
-            //       setFuelPrice('--');
-            //     } else {
-            //       setFuelPrice(station.price.premium.price);
-            //     }
-            //   } else if (preferences.fuelType === 'Diesel') {
-            //     if (station.price.diesel.price === 0) {
-            //       setFuelPrice('--');
-            //     } else {
-            //       setFuelPrice(station.price.diesel.price);
-            //     }
-            //   }
-            // }, [preferences.fuelType]);
             const fuelPrice =
               Object.values(station.price)[preferences[2]].price || '- -';
             const fuelType =

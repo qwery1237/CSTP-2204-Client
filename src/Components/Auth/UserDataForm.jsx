@@ -1,31 +1,31 @@
-import { useState } from "react";
-import serverLink from "../../serverLink";
-import axios from 'axios'
+import { useState } from 'react';
+import serverLink from '../../serverLink';
+import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import CustomButton from "../UI/CustomButton";
+import CustomButton from '../UI/CustomButton';
 import EditIcon from '@mui/icons-material/Edit';
 
 import BadgeOutlinedIcon from '@mui/icons-material/BadgeOutlined';
-export default function UserDataForm({
+import { useAuth } from '../../context/AuthContext';
+export default function UserDataForm({ email }) {
+  const { updateUserData } = useAuth();
+  const [img, setImg] = useState(
+    'https://res.cloudinary.com/dddggrofv/image/upload/v1691608835/profile_lxq8sq.jpg'
+  );
+  const [userName, setUserName] = useState('');
 
-  email,
-
-}) {
-    const [img, setImg] = useState("https://res.cloudinary.com/dddggrofv/image/upload/v1691608835/profile_lxq8sq.jpg")
-    const [userName, setUserName] = useState("")
-  
   const [error, setError] = useState('');
 
   const [errorNameBorder, setErrorNameBorder] = useState(false);
-  
+
   const navigate = useNavigate();
   const handleUserData = async (e) => {
     e.preventDefault();
     // setIsLoading(true);
     setErrorNameBorder(false);
-    let invite = ""
-    if(localStorage.getItem("inviteToken")){
-       invite = JSON.parse(localStorage.getItem("inviteToken"))
+    let invite = '';
+    if (localStorage.getItem('inviteToken')) {
+      invite = JSON.parse(localStorage.getItem('inviteToken'));
     }
     try {
       const response = await axios.post(
@@ -34,7 +34,7 @@ export default function UserDataForm({
           email: email,
           name: userName,
           profileImg: img,
-          invite: invite
+          invite: invite,
         },
         {
           headers: {
@@ -43,15 +43,15 @@ export default function UserDataForm({
         }
       );
       const { success, error, token } = response.data;
-    //   setIsLoading(false);
+      //   setIsLoading(false);
       if (success === true) {
-        localStorage.setItem('token', JSON.stringify(token));
+        await updateUserData(token);
         navigate('/home');
       } else {
         setError(error);
       }
     } catch (error) {
-    //   setIsLoading(false);
+      //   setIsLoading(false);
       console.error('Network error:', error);
     }
   };
@@ -137,9 +137,8 @@ export default function UserDataForm({
           </div>
         )}
         <div className='mt-4'></div>
-            
+
         <CustomButton>Finish</CustomButton>
-       
       </form>
     </>
   );

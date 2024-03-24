@@ -1,18 +1,18 @@
-import { useEffect, useState } from "react";
-import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
-import SideBar from "../Components/SideBar/SideBar";
-import TopNav from "../Components/TopNav/TopNav";
-import ModalContent from "../Components/StationDetail/ModalContent";
-import StationInfo from "../Components/StationDetail/StationInfo";
-import GasPrice from "../Components/StationDetail/GasPrice";
-import Amenities from "../Components/StationDetail/Amenities";
-import Contributor from "../Components/StationDetail/Contributor/Contributor";
-import CommentSection from "../Components/StationDetail/CommentSection/CommentSection";
+import { useEffect, useState } from 'react';
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
+import SideBar from '../Components/SideBar/SideBar';
+import TopNav from '../Components/TopNav/TopNav';
+import ModalContent from '../Components/StationDetail/ModalContent';
+import StationInfo from '../Components/StationDetail/StationInfo';
+import GasPrice from '../Components/StationDetail/GasPrice';
+import Amenities from '../Components/StationDetail/Amenities';
+import Contributor from '../Components/StationDetail/Contributor/Contributor';
+import CommentSection from '../Components/StationDetail/CommentSection/CommentSection';
 
-import { getGasStationById } from "../api/gasStation";
-import { useAuth } from "../context/AuthContext";
-import Loading from "../Components/UI/Loading";
-import BgBlackOpacity from "../Components/BgBlackOpacity";
+import { getGasStationById } from '../api/gasStation';
+import { useAuth } from '../context/AuthContext';
+import Loading from '../Components/UI/Loading';
+import BgBlackOpacity from '../Components/BgBlackOpacity';
 
 export default function GasStation() {
   const [isProfilePopUp, setIsProfilePopUp] = useState(false);
@@ -23,45 +23,45 @@ export default function GasStation() {
   const { user, token, updateUserData } = useAuth();
   const [gasInfo, setGasInfo] = useState([
     {
-      type: "Regular",
-      price: " - -",
-      updatedBy: "- -",
-      updatedAt: "Not updated",
+      type: 'Regular',
+      price: ' - -',
+      updatedBy: '- -',
+      updatedAt: 'Not updated',
     },
     {
-      type: "Mid-grade",
-      price: " - -",
-      updatedBy: "- -",
-      updatedAt: "Not updated",
+      type: 'Mid-grade',
+      price: ' - -',
+      updatedBy: '- -',
+      updatedAt: 'Not updated',
     },
     {
-      type: "Premium",
-      price: " - -",
-      updatedBy: "- -",
-      updatedAt: "Not updated",
+      type: 'Premium',
+      price: ' - -',
+      updatedBy: '- -',
+      updatedAt: 'Not updated',
     },
     {
-      type: "Diesel",
-      price: " - -",
-      updatedBy: "- -",
-      updatedAt: "Not updated",
+      type: 'Diesel',
+      price: ' - -',
+      updatedBy: '- -',
+      updatedAt: 'Not updated',
     },
   ]);
 
   useEffect(() => {
     const path = window.location.pathname;
-    const parts = path.split("/");
+    const parts = path.split('/');
     const lastPart = parts[parts.length - 1];
     setPlaceId(lastPart);
   }, []);
-  
+
   useEffect(() => {
     if (station && station.price) {
       if (station.price.regular.price && station.price.regular.price > 0) {
         const updatedAgo = getUpdatedAgo(station.price.regular.timeStamp);
 
         updateGasInfo({
-          type: "Regular",
+          type: 'Regular',
           price: station.price.regular.price,
           updatedBy: station.price.regular.name,
           updatedAt: updatedAgo,
@@ -71,7 +71,7 @@ export default function GasStation() {
         const updatedAgo = getUpdatedAgo(station.price.midGrade.timeStamp);
 
         updateGasInfo({
-          type: "Mid-grade",
+          type: 'Mid-grade',
           price: station.price.midGrade.price,
           updatedBy: station.price.midGrade.name,
           updatedAt: updatedAgo,
@@ -81,7 +81,7 @@ export default function GasStation() {
         const updatedAgo = getUpdatedAgo(station.price.premium.timeStamp);
 
         updateGasInfo({
-          type: "Premium",
+          type: 'Premium',
           price: station.price.premium.price,
           updatedBy: station.price.premium.name,
           updatedAt: updatedAgo,
@@ -91,7 +91,7 @@ export default function GasStation() {
         const updatedAgo = getUpdatedAgo(station.price.diesel.timeStamp);
 
         updateGasInfo({
-          type: "Diesel",
+          type: 'Diesel',
           price: station.price.diesel.price,
           updatedBy: station.price.diesel.name,
           updatedAt: updatedAgo,
@@ -112,9 +112,12 @@ export default function GasStation() {
 
   function getUpdatedAgo(time) {
     const timeDifferenceInSeconds = Math.floor((timestamp - time) / 1000);
-    let timeDifference = "";
-
-    if (timeDifferenceInSeconds < 60) {
+    let timeDifference = '';
+    if (isNaN(timeDifferenceInSeconds)) {
+      timeDifference = 'No time data';
+    } else if (timeDifferenceInSeconds < 15) {
+      timeDifference = 'just now';
+    } else if (timeDifferenceInSeconds < 60) {
       timeDifference = `${timeDifferenceInSeconds} sec ago`;
     } else if (timeDifferenceInSeconds < 3600) {
       timeDifference = `${Math.floor(timeDifferenceInSeconds / 60)} min ago`;
@@ -154,7 +157,7 @@ export default function GasStation() {
   };
 
   if (!station) {
-    return <Loading bgColor="bg-inherit" />;
+    return <Loading bgColor='bg-inherit' />;
   }
 
   // TODO: get gasInfo from real database
@@ -168,7 +171,8 @@ export default function GasStation() {
             token={token}
             setShowModal={setShowModal}
             gasInfo={gasInfo}
-            setStation={setStation} setTimestamp={setTimestamp} 
+            setStation={setStation}
+            setTimestamp={setTimestamp}
             updateUserData={updateUserData}
           />
         </Modal>
@@ -178,18 +182,18 @@ export default function GasStation() {
           onClick={() => {
             setShowModal(true);
           }}
-          name="price"
-          className=" flex flex-row items-center tp w-[100px] justify-center gap-x-1 cursor-pointer hover:text-white"
+          name='price'
+          className=' flex flex-row items-center tp w-[100px] justify-center gap-x-1 cursor-pointer hover:text-white'
         >
           <EditOutlinedIcon />
           <div>Price</div>
         </div>
       </TopNav>
-      <div className=" flex-1 flex-col overflow-auto mt-3">
+      <div className=' flex-1 flex-col overflow-auto mt-3'>
         <StationInfo placeId={placeId} station={station} />
         <GasPrice gasInfo={gasInfo} setShowModal={setShowModal} />
         <Amenities station={station} />
-        <Contributor   station={station}/>
+        <Contributor station={station} />
 
         <CommentSection
           timestamp={timestamp}

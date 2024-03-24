@@ -4,6 +4,7 @@ import Context from './context';
 import SideBar from './Components/SideBar/SideBar';
 import BottomNav from './Components/BottomNav/BottomNav';
 import MainLayout from './Components/Layout/MainLayout';
+import ProtectedRoute from './Screen/ProtectedRoute';
 
 export default function App() {
   const { pathname } = useLocation();
@@ -26,17 +27,19 @@ export default function App() {
         <Outlet />
       ) : (
         <MainLayout>
-          <SideBar />
-          <div className='flex flex-1 flex-col overflow-hidden'>
-            <Outlet context={{ setIsProfilePopUp }} />
-            <BottomNav />
-          </div>
-          {isProfilePopUp && (
-            <SideBar
-              isProfilePopUp={isProfilePopUp}
-              setIsProfilePopUp={setIsProfilePopUp}
-            />
-          )}
+          <ProtectedRoute>
+            <SideBar />
+            <div className='flex flex-1 flex-col overflow-hidden'>
+              <Outlet context={{ setIsProfilePopUp }} />
+              <BottomNav />
+            </div>
+            {isProfilePopUp && (
+              <SideBar
+                isProfilePopUp={isProfilePopUp}
+                setIsProfilePopUp={setIsProfilePopUp}
+              />
+            )}
+          </ProtectedRoute>
         </MainLayout>
       )}
     </Context.Provider>
