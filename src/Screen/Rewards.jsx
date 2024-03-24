@@ -15,6 +15,7 @@ import Avatars from '../Components/Reward/Avatars';
 import Frames from '../Components/Reward/Frames';
 import GiftCards from '../Components/Reward/GiftCards';
 import { useAuth } from '../context/AuthContext';
+import { MdClose } from 'react-icons/md';
 
 export const GIFTCARDS = {
   items: [
@@ -73,6 +74,7 @@ export default function Rewards() {
   const { setIsProfilePopUp } = useOutletContext();
   const { user } = useAuth();
   const [point, setPoint] = useState(0);
+  const [showHistory, setShowHistory] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [modal, setModal] = useState();
   useEffect(() => {
@@ -82,9 +84,61 @@ export default function Rewards() {
       return;
     }
     setPoint(user.points);
+    console.log(1);
   }, [user?.points]);
+  const showPointHistory = () => {
+    setShowHistory(true);
+  };
   return (
     <>
+      {showHistory && (
+        <Modal className>
+          <div className='flex justify-between w-full text-darkMode-border min-w-36 mb-4 mt-2 text-white '>
+            <div className='flex-1'>Point History</div>
+
+            <MdClose
+              onClick={() => setShowHistory(false)}
+              className='text-xl cursor-pointer'
+            />
+          </div>
+          <div className='flex-1 overflow-auto '>
+            {user.pointHistory?.length ? (
+              user.pointHistory.reverse().map((history) => (
+                <div
+                  key={history._id}
+                  className='rounded-lg bg-transparent border-[1px] cborder flex px-4 py-2 mb-1 max-[360px]:flex-col'
+                >
+                  {console.log(history)}
+                  <div className='th flex-1 flex items-center max-[270px]:hidden'>
+                    {history.reason}
+                  </div>
+                  <div>
+                    <span
+                      className={`flex items-center justify-end max-[270px]:justify-center ${
+                        history.isRedeem
+                          ? 'text-darkMode-error'
+                          : 'text-darkMode-valid'
+                      }`}
+                    >
+                      <SiPix className='text-xs mr-1.5' />
+                      {Math.abs(history.pointsAmount)}
+                    </span>
+                    <span className='flex items-center tp justify-end max-[270px]:justify-center'>
+                      <SiPix className='text-xs mr-1.5' />
+                      {history.pointsLeft}
+                    </span>
+                  </div>
+                  <p></p>
+                </div>
+              ))
+            ) : (
+              <div className=' h-28 th text-xl  rounded-lg bg-transparent border-[1px] cborder flex items-center justify-center max-[270px]:hidden'>
+                History does not exist
+              </div>
+            )}
+          </div>
+        </Modal>
+      )}
       {showModal && (
         <Modal>
           <ItemInfo
@@ -96,7 +150,10 @@ export default function Rewards() {
         </Modal>
       )}
       <TopNav setIsProfilePopUp={setIsProfilePopUp}>
-        <div className='flex flex-row items-center th w-[100px] justify-center gap-x-1 cursor-pointer '>
+        <div
+          onClick={showPointHistory}
+          className='flex flex-row items-center th w-[100px] justify-center gap-x-1 cursor-pointer '
+        >
           <SiPix className='text-xs mr-1.5' />
           <span className='text-sm '>{point.toLocaleString('en-US')}</span>
         </div>
