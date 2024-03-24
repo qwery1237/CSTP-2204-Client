@@ -56,17 +56,15 @@ export default function ItemInfo({ point, setPoint, setShowModal, modal }) {
       ) : (
         <>
           <div className='h-8'></div>
-          <div className='flex w-full justify-center'>
-            <CustomButton
-              handleClick={getCoupon}
-              bgColor={!isAvailable && '#d32f2f'}
-              disable={!isAvailable}
-              width='192px'
-              fontSize='base'
-            >
-              {isAvailable ? `GET ${type.toUpperCase()}` : 'NOT ENOUGH UNIT'}
-            </CustomButton>
-          </div>
+          <CustomButton
+            handleClick={getCoupon}
+            bgColor={!isAvailable && '#d32f2f'}
+            disable={!isAvailable}
+            width='192px'
+            fontSize='base'
+          >
+            {isAvailable ? `GET ${type.toUpperCase()}` : 'NOT ENOUGH UNIT'}
+          </CustomButton>
         </>
       )}
     </>
