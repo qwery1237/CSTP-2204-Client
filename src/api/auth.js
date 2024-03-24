@@ -102,7 +102,6 @@ export const sendchangePasswordEmail = async (email) => {
   try {
     const response = await axios.post(serverLink + '/auth/forgetpassword', {
       email,
-      baseUrl: import.meta.env.VITE_DEPLOYED_LINK,
     });
     return response.data;
   } catch (error) {
