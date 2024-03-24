@@ -64,7 +64,6 @@ export const emailLogin = async (email, password) => {
   }
 };
 export const googleLogin = async (token) => {
-  
   try {
     const response = await axios.get(
       `https://www.googleapis.com/oauth2/v1/userinfo?access_token=${token}`,
@@ -81,20 +80,20 @@ export const googleLogin = async (token) => {
     throw new Error(error.message);
   }
 };
-export const loginWithGoogleAccount = async (name,email,picture) => {
-  let invite = ""
-  if(localStorage.getItem("inviteToken")){
-     invite = JSON.parse(localStorage.getItem("inviteToken"))
+export const loginWithGoogleAccount = async (name, email, picture) => {
+  let invite = '';
+  if (localStorage.getItem('inviteToken')) {
+    invite = JSON.parse(localStorage.getItem('inviteToken'));
   }
   try {
     const response = await axios.post(serverLink + '/auth/oauth', {
       email: email,
       name: name,
       picture: picture,
-      invite: invite
+      invite: invite,
     });
-    
-     return response.data;
+
+    return response.data;
   } catch (error) {
     throw new Error(error.message);
   }
@@ -103,6 +102,7 @@ export const sendchangePasswordEmail = async (email) => {
   try {
     const response = await axios.post(serverLink + '/auth/forgetpassword', {
       email,
+      serverLink,
     });
     return response.data;
   } catch (error) {
