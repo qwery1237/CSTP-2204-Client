@@ -53,10 +53,10 @@ const SIDEBARACTIONS = [
       <PixIcon key='15' sx={{ color: 'white', fontSize: 14 }} />,
     ],
   },
-  {
-    title: 'Live Support',
-    icon: <SupportAgentIcon sx={{ color: '#ffffff', fontSize: 25 }} />,
-  },
+  // {
+  //   title: 'Live Support',
+  //   icon: <SupportAgentIcon sx={{ color: '#ffffff', fontSize: 25 }} />,
+  // },
 ];
 export default function Profile() {
   const navigate = useNavigate();

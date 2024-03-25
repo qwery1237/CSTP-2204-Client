@@ -49,6 +49,7 @@ export default function ContactUs({ helpDataId, setHelpDataId }) {
   const isHome = crrAction == 'Home';
   const isChat = crrAction == 'Chat';
   const isHelp = crrAction == 'Help';
+  const [isFocused, setIsFocused] = useState(false)
 
   return (
     <>
@@ -62,6 +63,7 @@ export default function ContactUs({ helpDataId, setHelpDataId }) {
             helpDataId={helpDataId}
             setHelpDataId={setHelpDataId}
             setCrrAction={setCrrAction}
+            setIsFocused={setIsFocused}
           />
         )}
         {isChat && <ContactUsChat setHelpDataId={setHelpDataId} />}
@@ -70,12 +72,14 @@ export default function ContactUs({ helpDataId, setHelpDataId }) {
             helpDataList={HELPDATA}
             helpDataId={helpDataId}
             setHelpDataId={setHelpDataId}
+            isAutoFocus={isFocused}
           />
         )}
       </div>
       <div className='border-t-[1px] cborder'></div>
       <div className=' sticky bottom-0 m-3'>
         <ContactUsNav
+          setIsFocused={  setIsFocused}
           crrAction={crrAction}
           setCrrAction={setCrrAction}
           helpDataId={helpDataId}

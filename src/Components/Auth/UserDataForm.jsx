@@ -45,7 +45,8 @@ export default function UserDataForm({ email }) {
       const { success, error, token } = response.data;
       //   setIsLoading(false);
       if (success === true) {
-        await updateUserData(token);
+        localStorage.setItem('token', JSON.stringify(token));
+        await updateUserData(token)
         navigate('/home');
       } else {
         setError(error);

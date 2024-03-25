@@ -29,6 +29,7 @@ export default function Frames({ point, setModal, setShowModal }) {
       itemId: id,
       card: <RewardCard reward={{ icon }} sm />,
       type: 'frame',
+      price: 25
     });
     setShowModal(true);
   };
@@ -53,7 +54,9 @@ export default function Frames({ point, setModal, setShowModal }) {
                     <div className='w-[93%] h-[93%] rounded-full bg-[#182335]' />
                   </div>
                 );
-                const isPurchased = user.framesOwned?.includes(id);
+               
+                const isPurchased =  user.framesOwned?.includes(id);
+                
                 return (
                   <li
                     onClick={() => handleOpenModal(id, icon, isPurchased)}

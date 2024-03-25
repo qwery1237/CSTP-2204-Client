@@ -29,6 +29,7 @@ export default function Avatars({ point, setModal, setShowModal }) {
       itemId: id,
       card: <RewardCard reward={{ icon }} sm />,
       type: 'avatar',
+      price: 25
     });
     setShowModal(true);
   };

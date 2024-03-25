@@ -88,6 +88,10 @@ export default function Rewards() {
   const showPointHistory = () => {
     setShowHistory(true);
   };
+  const closeHistory = () => {
+    user.pointHistory.reverse();
+    setShowHistory(false);
+  };
   return (
     <>
       {showHistory && (
@@ -96,7 +100,7 @@ export default function Rewards() {
             <div className='flex-1'>Point History</div>
 
             <MdClose
-              onClick={() => setShowHistory(false)}
+              onClick={closeHistory}
               className='text-xl cursor-pointer'
             />
           </div>
@@ -126,7 +130,6 @@ export default function Rewards() {
                       {history.pointsLeft}
                     </span>
                   </div>
-                  <p></p>
                 </div>
               ))
             ) : (

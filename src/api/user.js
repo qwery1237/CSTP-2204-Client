@@ -308,3 +308,19 @@ export const changeUsingItem = async (type, token, link) => {
     throw new Error(error.message);
   }
 };
+export function getLevel(points) {
+  let level = 1;
+  let pointsNeeded = 50;
+  let pointsLeft = points;
+  let bool = true;
+  while (bool) {
+    if (pointsLeft >= pointsNeeded) {
+      pointsLeft -= pointsNeeded;
+      pointsNeeded += 50;
+      level += 1;
+    } else {
+      bool = false;
+    }
+  }
+  return { level, pointsNeeded, pointsLeft };
+}

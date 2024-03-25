@@ -37,7 +37,7 @@ export default function StationInfo({ setModal, station, placeId }) {
         setIsFavorite(false);
       }
     }
-  }, [user.favourite]);
+  }, [user]);
   useEffect(() => {
     if (reviews  && reviews.length > 0) {
       setRating(0)
@@ -159,7 +159,7 @@ export default function StationInfo({ setModal, station, placeId }) {
               }}
               className=" absolute top-2 right-2 th cursor-pointer text-lightMode-error dark:text-darkMode-error"
             >
-              {isFavorite ? <FavoriteIcon /> : <FavoriteBorder />}
+              { isFavorite && isFavorite ? <FavoriteIcon /> : <FavoriteBorder />}
             </div>
             <div className=" w-14 h-14 absolute bottom-[-16px] right-[-16px] th  rounded-full bg">
               <div

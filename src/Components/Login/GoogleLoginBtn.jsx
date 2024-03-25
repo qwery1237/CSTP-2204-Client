@@ -21,9 +21,10 @@ export default function GoogleLoginBtn() {
           alert(result.error);
           return;
         }
-        if (result.success) {
-          await updateUserData(result.token);
-          navigate('/home');
+        if(result.success){
+          localStorage.setItem("token", JSON.stringify(result.token))
+          await updateUserData(result.token)
+          navigate('/home')
         }
       } catch (e) {
         alert(e.message);

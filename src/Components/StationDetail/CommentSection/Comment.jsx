@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { ThumbUp } from "@mui/icons-material";
 import StarIcon from "@mui/icons-material/Star";
-import { commentLike, commentUnLike } from "../../../api/user";
+import { commentLike, commentUnLike, getLevel } from "../../../api/user";
+import { getUserCommentInfo } from "../../../api/gasStation";
 export default function Comment({ review, timestamp, user, token, placeId }) {
   const [howLongAgo, setHowLongAgo] = useState("");
   const [isLiked, setIsLiked] = useState(false);
   const [noOfLikes, setNoOfLikes] = useState(0);
+  const [level, setLevel] = useState(1)
+  const [userFrame, setUserFrame] = useState("")
+  const [userAvatar, setUserAvatar] = useState("")
   useEffect(() => {
     const timeDifferenceInSeconds = Math.floor(
       (timestamp - review.timeStamp) / 1000
@@ -54,12 +58,30 @@ export default function Comment({ review, timestamp, user, token, placeId }) {
       }
     }
   };
+  useEffect(()=>{
+    
+      getdata()
+  
+  
+  },[])
+ async function  getdata (){
+  const result = await getUserCommentInfo(token, review.email)
+ 
+  if(result.success){
+    if(result.data.frame){
+      setUserFrame(result.data.frame)
+    }
+    setUserAvatar(result.data.avatar)
+    const lvl = getLevel(result.data.totalPoints)
+    setLevel(lvl.level)
+  }
+ }
   return (
     <div className="w-full rounded-lg border-[1px] cborder p-4 flex-col flex">
       <div className="flex flex-row gap-x-2">
         <div
           style={{
-            backgroundImage: 'url("/frame/level5.jpg")',
+            backgroundImage: `url(${userFrame})`,
             backgroundSize: "cover",
 
             backgroundPosition: "center",
@@ -69,14 +91,14 @@ export default function Comment({ review, timestamp, user, token, placeId }) {
           <img
             onClick={() => setIsProfilePopUpHandler()}
             className="size-9 rounded-full  cursor-pointer object-cover relative"
-            src="/oilrig.jpg"
-            alt=""
+            src = {userAvatar}
+            alt = ""
           />
         </div>
 
         <div className=" flex flex-col justify-evenly">
           <div className=" text-sm th">Harinder</div>
-          <div className=" text-xs tp">Level 2</div>
+          <div className=" text-xs tp">Level {level}</div>
         </div>
         <div className="flex-1"></div>
         <div className=" tp flex justify-between items-center flex-col">

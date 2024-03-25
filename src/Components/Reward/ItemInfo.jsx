@@ -8,7 +8,7 @@ import { purchaseItem } from '../../api/reward';
 
 export default function ItemInfo({ point, setPoint, setShowModal, modal }) {
   const { user, token, updateUserData } = useAuth();
-  const { itemId, title, amount, card, price = 25, type } = modal;
+  const { itemId, title, amount, card, price, type } = modal;
   const isAvailable = price <= point;
   const [result, setResult] = useState();
   const handleClick = () => {
@@ -29,8 +29,7 @@ export default function ItemInfo({ point, setPoint, setShowModal, modal }) {
       .then(setResult)
       .catch(alert)
       .finally(() => updateUserData(token));
-    const balance = point - price;
-    setPoint(balance);
+    
   };
 
   return (
@@ -40,7 +39,7 @@ export default function ItemInfo({ point, setPoint, setShowModal, modal }) {
           <SiPix className='text-xs mr-1.5' />
           <span className='text-sm '>{point.toLocaleString('en-US')}</span>
         </div>
-        <MdClose className='text-xl' onClick={handleClick} />
+        <MdClose className='text-xl cursor-pointer' onClick={handleClick} />
       </div>
       <div className='flex flex-col items-center text-white'>{card}</div>
       <div className='w-full min-w-36 text-center pt-3 th'>

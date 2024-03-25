@@ -8,11 +8,13 @@ export default function ContactUsNav({
   setCrrAction,
   helpDataId,
   setHelpDataId,
+  setIsFocused,
 }) {
   const isHome = crrAction == 'Home' && !helpDataId;
   const isChat = crrAction == 'Chat';
   const isHelp = crrAction == 'Help' || (!isChat && helpDataId);
   const handleClick = (action) => {
+    setIsFocused(false)
     setHelpDataId(null);
     setCrrAction(action);
   };

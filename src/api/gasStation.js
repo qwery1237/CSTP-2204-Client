@@ -88,3 +88,22 @@ export const getCrrLocation = async () => {
     }
   });
 };
+export const getUserCommentInfo = async ( token,email) => {
+  try {
+    const response = await axios.post(
+      serverLink + '/user/getusercommentinfo',
+      {
+        email: email,
+      },
+      {
+        headers: {
+          Authorization: 'Bearer ' + token,
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    throw new Error(error.message);
+  }
+};
+

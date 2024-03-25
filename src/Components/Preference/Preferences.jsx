@@ -76,7 +76,7 @@ export default function Preferences({ isList, preferences, setPreferences }) {
     <>
       <div className='w-full mt-4'>
         <div className='w-full flex flex-col'>
-          <div className='w-full flex justify-evenly max-[415px]:justify-start overflow-x-auto gap-x-2 px-4'>
+          <div className='w-full flex justify-evenly max-[415px]:justify-start overflow-x-auto gap-x-2 px-4 max-[446px]:mb-4'>
             {PREFERENCES.map((item, i) => {
               if (i == 1 && !isList) {
                 return;

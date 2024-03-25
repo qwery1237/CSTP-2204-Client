@@ -1,15 +1,16 @@
-import React, { useState } from 'react';
-import CustomInput from '../../UI/CustomInput';
-import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
-import HelpCard from './HelpCard';
-import HelpDetail from './HelpDetail';
+import React, { useState } from "react";
+import CustomInput from "../../UI/CustomInput";
+import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
+import HelpCard from "./HelpCard";
+import HelpDetail from "./HelpDetail";
 
 export default function ContactUsHelp({
   helpDataList,
   helpDataId,
   setHelpDataId,
+  isAutoFocus = false,
 }) {
-  const [text, setText] = useState('');
+  const [text, setText] = useState("");
   const handleChange = (e) => {
     setText(e.target.value);
   };
@@ -20,18 +21,19 @@ export default function ContactUsHelp({
 
   return (
     <>
-      <div className=' sticky top-0 bg-inherit '>
-        <div className='mb-6 mt-2 w-full relative'>
+      <div className=" sticky top-[-20px] bg-inherit sbg pt-2">
+        <div className="mb-4  w-full relative">
           <CustomInput
             handleChange={handleChange}
-            placeHolder='Search for help'
-            paddingLeft='36px'
+            placeHolder="Search for help"
+            paddingLeft="36px"
+            autoFocus={isAutoFocus}
           >
-            <SearchOutlinedIcon className='absolute left-2 tp text-2xl bottom-[8px]' />
+            <SearchOutlinedIcon className="absolute left-2 tp text-2xl bottom-[8px]" />
           </CustomInput>
         </div>
       </div>
-      <div>
+      <div className="pb-4">
         {helpDataList
           .filter(({ title }) =>
             title.toLowerCase().includes(text.toLowerCase())

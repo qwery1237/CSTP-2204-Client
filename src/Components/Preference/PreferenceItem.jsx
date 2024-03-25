@@ -41,7 +41,7 @@ export default function PreferenceItem({
       onClick={handlePopUp}
       className={`w-[90px] ${
         !options && 'w-[150px]'
-      } h-[40px] mb-4 flex justify-between items-center th text-xs ${
+      } ${title === "Recently updated" ? "w-[120px] min-w-[120px]" : "w-[90px] min-w-[90px]"}  h-[40px] mb-4 flex justify-between items-center th text-xs ${
         isActive ? 'bgbtn' : 'sbg'
       } px-3 py-1 rounded-lg`}
     >

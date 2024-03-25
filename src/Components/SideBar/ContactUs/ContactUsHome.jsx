@@ -11,8 +11,10 @@ export default function ContactUsHome({
   setHelpDataId,
   setCrrAction,
   helpDataList,
+  setIsFocused,
 }) {
   const sendHelpHandler = (id) => {
+    
     setHelpDataId(id);
     // setCrrAction('Help');
   };
@@ -31,9 +33,13 @@ export default function ContactUsHome({
       <div className=' text-3xl tp'>Hey Harinder &#128075;</div>
       <div className='mb-3 text-3xl th'>How can we help?</div>
 
+      <span onClick={()=>{setCrrAction("Help")
+    setIsFocused(true)
+    }}>
       <CustomInput placeHolder='Search for help' paddingLeft='36px'>
         <SearchOutlinedIcon className='absolute left-2 tp text-2xl bottom-[8px]' />
       </CustomInput>
+      </span>
 
       {helpDataList.map((data) => (
         <HelpCard

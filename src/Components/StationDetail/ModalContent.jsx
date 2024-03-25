@@ -82,7 +82,7 @@ export default function ModalContent({ setShowModal, station, token,setTimestamp
     if (result.success) {
       setTimestamp(result.data.currentTimestamp)
       setStation((prevState) => ({ ...prevState , priceHistory: result.data.priceHistory, price: result.data.price}));
-      updateUserData()
+      updateUserData(token)
       setShowModal(false)
 
     } else {
