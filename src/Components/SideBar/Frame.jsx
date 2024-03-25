@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { getLvItems, getOwnedItems } from '../../api/reward';
-import { changeUsingItem } from '../../api/user';
+import { changeUsingItem, getLevel } from '../../api/user';
 import { FaCheck } from 'react-icons/fa';
 
 export default function Frame() {
   const { user, token, updateUserData } = useAuth();
+  const [userLv, setUserLv] = useState();
   const [frames, setFrames] = useState();
   const [crrFrame, setCrrFrame] = useState();
   const displayFrames = async () => {
@@ -27,6 +28,7 @@ export default function Frame() {
   };
   useEffect(() => {
     if (!user) return;
+    setUserLv(getLevel(user.totalPoints).level);
     displayFrames();
   }, [user]);
   return (
@@ -35,7 +37,7 @@ export default function Frame() {
         {frames &&
           frames.map(({ link, levelCap }) => {
             const isCrrFrame = link == crrFrame;
-            const isActive = levelCap <= 3;
+            const isActive = levelCap <= userLv;
             const preventClick = isCrrFrame || !isActive;
 
             return (

@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { getLvItems, getOwnedItems } from '../../api/reward';
-import { changeUsingItem } from '../../api/user';
+import { changeUsingItem, getLevel } from '../../api/user';
 import { FaCheck } from 'react-icons/fa';
 
 export default function Avatar() {
   const { user, token, updateUserData } = useAuth();
   const [avatars, setAvatars] = useState();
+  const [userLv, setUserLv] = useState();
   const [crrAvatar, setCrrAvatar] = useState();
   const displayAvatars = async () => {
     try {
@@ -27,6 +28,7 @@ export default function Avatar() {
   };
   useEffect(() => {
     if (!user) return;
+    setUserLv(getLevel(user.totalPoints).level);
     displayAvatars();
   }, [user]);
   return (
@@ -35,7 +37,8 @@ export default function Avatar() {
         {avatars &&
           avatars.map(({ link, levelCap }) => {
             const isCrrAvatar = link == crrAvatar;
-            const isActive = levelCap <= 3;
+            const isActive = levelCap <= userLv;
+            console.log(userLv);
             const preventClick = isCrrAvatar || !isActive;
             return (
               <div
