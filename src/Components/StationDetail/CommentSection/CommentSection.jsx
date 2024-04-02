@@ -33,27 +33,29 @@ export default function CommentSection({
     } else if (sortType === "lrated") {
       const reviewCopy = [...station.reviews];
       reviewCopy.sort((a, b) => b.rating - a.likes);
-      reviewCopy.reverse()
+      reviewCopy.reverse();
       setReviews(reviewCopy);
     }
   };
   return (
-    <div className="flex-1 p-4 max-[630px]:px-2  mt-4 flex-col">
+    <div className="flex-1 p-4 max-[630px]:px-2  mt-4 flex-col max-[520px]:pb-[64px]">
       <div className=" flex flex-row justify-between items-center">
         <div className="th text-2xl">Reviews</div>
-        <div className=" max-[640px]:hidden">
-          {" "}
-          <div onClick={() => setIsSortPopUp((prev) => !prev)}>
-            <Sort sortHandler={sortHandler} isSortPopUp={isSortPopUp} />
+        {reviews && reviews.length > 0 && (
+          <div className=" max-[640px]:hidden">
+            {" "}
+            <div onClick={() => setIsSortPopUp((prev) => !prev)}>
+              <Sort sortHandler={sortHandler} isSortPopUp={isSortPopUp} />
+            </div>
           </div>
-        </div>
+        )}
       </div>
       <div className="flex flex-row gap-4 p-4 mt-4 max-[640px]:flex-col ">
         <div className=" flex-1  flex  flex-col gap-y-4 h-fit min-[640px]:sticky min-[640px]:top-[-280px] ">
           <ReviewOverview station={station} />
           <AddReview
-          user={user}
-          station={station}
+            user={user}
+            station={station}
             setTimestamp={setTimestamp}
             setStation={setStation}
             token={token}
@@ -61,14 +63,25 @@ export default function CommentSection({
           />
         </div>
         <div className=" flex-1 flex flex-col gap-y-4">
-          <div className=" flex flex-row justify-end min-[640px]:hidden">
-            <div onClick={() => setIsSortPopUp((prev) => !prev)}>
-              <Sort sortHandler={sortHandler} isSortPopUp={isSortPopUp} />
+          {reviews && reviews.length > 0 && (
+            <div className=" flex flex-row justify-end min-[640px]:hidden">
+              <div onClick={() => setIsSortPopUp((prev) => !prev)}>
+                <Sort sortHandler={sortHandler} isSortPopUp={isSortPopUp} />
+              </div>
             </div>
-          </div>
-          { reviews && reviews.length > 0 ? (
+          )}
+          {reviews && reviews.length > 0 ? (
             reviews.map((review) => {
-              return <Comment   placeId={station.placeId} token={token} user={user} key={review.email} timestamp={timestamp} review={review} />;
+              return (
+                <Comment
+                  placeId={station.placeId}
+                  token={token}
+                  user={user}
+                  key={review.email}
+                  timestamp={timestamp}
+                  review={review}
+                />
+              );
             })
           ) : (
             <div className=" text-lightMode-header dark:text-darkMode-header text-center text-sm">

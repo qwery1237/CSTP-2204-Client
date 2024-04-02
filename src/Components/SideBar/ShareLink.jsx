@@ -15,7 +15,7 @@ export default function ShareLink() {
   }, []);
   const getInvitationLink = async () => {
     const path = window.origin;
-  
+
     const tk = await getFriendInvitationLink(token);
     setLink(path + "/invite/" + tk);
   };
@@ -52,8 +52,10 @@ export default function ShareLink() {
     <div className=" w-full  caret-transparent pt-1">
       <div className="w-full px-3">
         <div className=" relative w-full">
-          <div className="w-full h-10 border-[1px] cborder rounded-lg px-2 flex items-center overflow-hidden mt-4">
-            <div className="tp">{link}</div>
+          <div className="w-full h-10 border-[1px] cborder rounded-lg px-2 flex items-center overflow-hidden mt-4 ">
+            <div className="tp whitespace-nowrap  ">
+              {link}
+            </div>
           </div>
           <div className="absolute right-[1px] top-[1px] h-9  px-2 sbg rounded-lg">
             <div

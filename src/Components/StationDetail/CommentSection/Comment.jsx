@@ -10,6 +10,7 @@ export default function Comment({ review, timestamp, user, token, placeId }) {
   const [level, setLevel] = useState(1)
   const [userFrame, setUserFrame] = useState("")
   const [userAvatar, setUserAvatar] = useState("")
+  const [username, setUserName] = useState("")
   useEffect(() => {
     const timeDifferenceInSeconds = Math.floor(
       (timestamp - review.timeStamp) / 1000
@@ -74,6 +75,7 @@ export default function Comment({ review, timestamp, user, token, placeId }) {
     setUserAvatar(result.data.avatar)
     const lvl = getLevel(result.data.totalPoints)
     setLevel(lvl.level)
+    setUserName(result.data.name)
   }
  }
   return (
@@ -97,7 +99,7 @@ export default function Comment({ review, timestamp, user, token, placeId }) {
         </div>
 
         <div className=" flex flex-col justify-evenly">
-          <div className=" text-sm th">Harinder</div>
+          <div className=" text-sm th">{username}</div>
           <div className=" text-xs tp">Level {level}</div>
         </div>
         <div className="flex-1"></div>
