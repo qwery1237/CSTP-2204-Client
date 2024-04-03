@@ -18,14 +18,18 @@ export default function GasStationCard({
   const navigate = useNavigate();
 
   const { user, token, updateUserData } = useAuth();
-  const { placeId: id, name, profileImg, distanceFromUser, address } = station;
+  const { placeId: id, name, profileImg, distanceFromUser, address ,reviews} = station;
 
   const [isFavorite, setIsfavorite] = useState(user.favourite.includes(id));
   const [rating, setRating] = useState();
+  const [filledStars, setFilledStars] = useState(0);
+  const [noOfrating, setNoOfRating] = useState(0);
+  const [stars, setStars] = useState([]);
   const [totalRating, setTotalRating] = useState();
   const [fuelPrice, setFuelPrice] = useState();
   const [fuelType, setFuelType] = useState();
-
+  const totalStars = 5;
+  const size = 16;
   useEffect(() => {
     if (!station) return;
     setRating(station.fuelGoRating.rating);
@@ -44,6 +48,7 @@ export default function GasStationCard({
     setIsfavorite(true);
     await updateUserData(token);
   };
+
   const handleDeleteFavorite = async () => {
     const { success, message } = await deleteFromFavorite(token, id);
 
@@ -54,42 +59,92 @@ export default function GasStationCard({
     setIsfavorite(false);
     await updateUserData(token);
   };
-  //TODO: organize and fix some code from here
-  const filledStars = Math.floor(rating);
-  const totalStars = 5;
-  const size = 16;
-  const stars = [];
-  // Filled stars
-  for (let i = 0; i < filledStars; i++) {
-    stars.push(<StarIcon key={i} sx={{ color: 'gold', fontSize: size }} />);
-  }
-
-  // Half star
-  if (!Number.isInteger(rating)) {
-    const halfStar = rating - filledStars;
-    if (halfStar < 0.3) {
-      stars.push(<StarIcon key={rating} sx={{ fontSize: size }} />);
-    } else if (halfStar > 0.7) {
-      stars.push(
-        <StarIcon key={rating} sx={{ color: 'gold', fontSize: size }} />
+  useEffect(() => {
+    if (reviews  && reviews.length > 0) {
+      setRating(0)
+    setFilledStars(0)
+    setNoOfRating(0)
+    
+    
+      
+      
+    
+      const sumOfRatings = reviews.reduce(
+        (total, obj) => total + obj.rating,
+        0
       );
-    } else {
-      stars.push(
-        <StarHalfIcon
-          key={filledStars}
-          sx={{ color: 'gold', fontSize: size }}
-        />
+      setRating(sumOfRatings / station.reviews.length);
+      const flooredRating = Math.floor(sumOfRatings / station.reviews.length);
+      setFilledStars(flooredRating);
+      setNoOfRating(reviews.length);
+    }
+  }, [reviews]);
+  useEffect(() => {
+    const starsCopy = [];
+    let num = 0;
+    for (let i = 0; i < filledStars; i++) {
+      num = num + 1;
+      starsCopy.push(
+        <StarIcon key={i} sx={{ color: "gold", fontSize: size }} />
       );
     }
-  }
+    if (!Number.isInteger(rating)) {
+      num = num + 1;
+      const halfStar = rating - filledStars;
+      if (halfStar < 0.3) {
+        starsCopy.push(<StarIcon sx={{ fontSize: size }} />);
+      } else if (halfStar > 0.7) {
+        starsCopy.push(<StarIcon sx={{ color: "gold", fontSize: size }} />);
+      } else {
+        starsCopy.push(
+          <StarHalfIcon
+            key={filledStars}
+            sx={{ color: "gold", fontSize: size }}
+          />
+        );
+      }
+    }
+    for (let i = num; i < totalStars; i++) {
+      starsCopy.push(<StarIcon key={i} sx={{ fontSize: size }} />);
+    }
+    setStars(starsCopy);
+  }, [filledStars, rating]);
+  //TODO: organize and fix some code from here
+  // const filledStars = Math.floor(rating);
+  // const totalStars = 5;
+  // const size = 16;
+  // const stars = [];
+  // // Filled stars
+  // for (let i = 0; i < filledStars; i++) {
+  //   stars.push(<StarIcon key={i} sx={{ color: 'gold', fontSize: size }} />);
+  // }
 
-  // Empty stars
-  for (let i = stars.length; i < totalStars; i++) {
-    stars.push(<StarIcon key={i} sx={{ fontSize: size }} />);
-  }
-  if (!index) {
-    getGasStationById(id, token);
-  }
+  // // Half star
+  // if (!Number.isInteger(rating)) {
+  //   const halfStar = rating - filledStars;
+  //   if (halfStar < 0.3) {
+  //     stars.push(<StarIcon key={rating} sx={{ fontSize: size }} />);
+  //   } else if (halfStar > 0.7) {
+  //     stars.push(
+  //       <StarIcon key={rating} sx={{ color: 'gold', fontSize: size }} />
+  //     );
+  //   } else {
+  //     stars.push(
+  //       <StarHalfIcon
+  //         key={filledStars}
+  //         sx={{ color: 'gold', fontSize: size }}
+  //       />
+  //     );
+  //   }
+  // }
+
+  // // Empty stars
+  // for (let i = stars.length; i < totalStars; i++) {
+  //   stars.push(<StarIcon key={i} sx={{ fontSize: size }} />);
+  // }
+  // if (!index) {
+  //   getGasStationById(id, token);
+  // }
 
   return (
     <div
@@ -125,7 +180,7 @@ export default function GasStationCard({
               <div className='  relative '>
                 <div className=' flex flex-row gap-x-[2px]'>{stars}</div>
               </div>
-              <div>({totalRating})</div>
+              <div>({noOfrating})</div>
             </div>
             <div className='tp flex w-full  flex-row gap-x-[2px] text-sm overflow-hidden'>
               <div className=''>{distanceFromUser} - </div>
