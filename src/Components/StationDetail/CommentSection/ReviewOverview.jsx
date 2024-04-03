@@ -56,13 +56,13 @@ export default function ReviewOverview({station}) {
       num = num + 1;
       const halfStar = rating - filledStars;
       if (halfStar < 0.3) {
-        starsCopy.push(<StarIcon key={i} sx={{ fontSize: size }} />);
+        starsCopy.push(<StarIcon  sx={{ fontSize: size }} />);
       } else if (halfStar > 0.7) {
-        starsCopy.push(<StarIcon  key={i} sx={{ color: "gold", fontSize: size }} />);
+        starsCopy.push(<StarIcon   sx={{ color: "gold", fontSize: size }} />);
       } else {
         starsCopy.push(
           <StarHalfIcon
-          key={i}
+        
             sx={{ color: "gold", fontSize: size }}
           />
         );

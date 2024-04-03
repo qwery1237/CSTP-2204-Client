@@ -23,13 +23,13 @@ export default function Sort({ isSortPopUp, sortHandler }) {
             Recent
           </div>
           <div
-            onClick={() => sortHandler("hrated")}
+            onClick={() => sortHandler("lrated")}
             className=" pb-2 cursor-pointer hover:text-lightMode-header hover:dark:text-darkMode-header"
           >
             Highest rated
           </div>
           <div
-            onClick={() => sortHandler("lrated")}
+            onClick={() => sortHandler("hrated")}
             className=" pb-2 cursor-pointer hover:text-lightMode-header hover:dark:text-darkMode-header"
           >
             lowest rated
