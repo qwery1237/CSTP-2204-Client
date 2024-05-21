@@ -17,6 +17,7 @@ import Accounts from './Accounts.jsx';
 import { AuthProvider } from './context/AuthContext.jsx';
 import InviteFriend from './Screen/InviteFriend.jsx';
 
+
 const router = createBrowserRouter([
   {
     path: '/',
@@ -57,6 +58,8 @@ const router = createBrowserRouter([
     path: '/profile',
     element: <ProfileScreen />,
   },
+
+  
   {
     path: 'invite/:id',
     element: <InviteFriend />,

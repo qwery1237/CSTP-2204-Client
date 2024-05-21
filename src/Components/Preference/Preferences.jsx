@@ -1,24 +1,24 @@
-import { useContext, useEffect, useState } from 'react';
-import Context from '../../context';
-import PreferenceItem from './PreferenceItem';
-import PreferenceOptions from './PreferenceOptions';
-import { DEFAULT_PREFERENCE } from '../../Screen/Home';
+import { useContext, useEffect, useState } from "react";
+import Context from "../../context";
+import PreferenceItem from "./PreferenceItem";
+import PreferenceOptions from "./PreferenceOptions";
+import { DEFAULT_PREFERENCE } from "../../Screen/Home";
 
 export const PREFERENCES = [
-  { title: 'Recently updated' },
-  { title: 'Sort', options: ['Distance', 'Rating', 'Price'] },
+  { title: "Recently updated" },
+  { title: "Sort", options: ["Distance", "Rating", "Price"] },
   {
-    title: 'Fuel type',
-    options: ['Regular', 'Mid-grade', 'Premium', 'Diesel'],
+    title: "Fuel type",
+    options: ["Regular", "Mid-grade", "Premium", "Diesel"],
   },
   {
-    title: 'Amenities',
+    title: "Amenities",
     options: [
-      'Car wash',
-      'Atm',
-      'Air pump',
-      'Convenience store',
-      'Ev charging station',
+      "Car wash",
+      "Atm",
+      "Air pump",
+      "Convenience store",
+      "Ev charging station",
     ],
   },
 ];
@@ -52,19 +52,41 @@ export default function Preferences({ isList, preferences, setPreferences }) {
       switch (crrPref[1]) {
         case 0:
           return (
-            station_a.distanceFromUser.replace(' km', '') -
-            station_b.distanceFromUser.replace(' km', '')
+            station_a.distanceFromUser.replace(" km", "") -
+            station_b.distanceFromUser.replace(" km", "")
           );
 
         case 1:
-          return station_b.fuelGoRating.rating - station_a.fuelGoRating.rating;
+          const sumOfRatings = station_b.reviews.reduce(
+            (total, obj) => total + obj.rating,
+            0
+          );
+          let average = sumOfRatings / station_b.reviews.length;
+
+          // Check if average is NaN, if so, set it to 0
+          if (isNaN(average)) {
+            average = 0;
+          }
+
+          const sumOfRatings2 = station_a.reviews.reduce(
+            (total, obj) => total + obj.rating,
+            0
+          );
+          let average2 = sumOfRatings2 / station_a.reviews.length;
+
+          // Check if average2 is NaN, if so, set it to 0
+          if (isNaN(average2)) {
+            average2 = 0;
+          }
+
+          return average - average2;
 
         default:
           if (!Object.values(station_a.price)[crrPref[2]].price) return 1;
           if (!Object.values(station_b.price)[crrPref[2]].price) return -1;
           return (
-            Object.values(station_a.price)[crrPref[2]].price -
-            Object.values(station_b.price)[crrPref[2]].price
+            Object.values(station_b.price)[crrPref[2]].price -
+            Object.values(station_a.price)[crrPref[2]].price
           );
       }
     });
@@ -74,9 +96,9 @@ export default function Preferences({ isList, preferences, setPreferences }) {
 
   return (
     <>
-      <div className='w-full mt-4'>
-        <div className='w-full flex flex-col'>
-          <div className='w-full flex justify-evenly max-[415px]:justify-start overflow-x-auto gap-x-2 px-4 max-[446px]:mb-4'>
+      <div className="w-full mt-4">
+        <div className="w-full flex flex-col">
+          <div className="w-full flex justify-evenly max-[415px]:justify-start overflow-x-auto gap-x-2 px-4 max-[446px]:mb-4">
             {PREFERENCES.map((item, i) => {
               if (i == 1 && !isList) {
                 return;
@@ -96,7 +118,7 @@ export default function Preferences({ isList, preferences, setPreferences }) {
               );
             })}
           </div>
-          <div className='w-full flex'>
+          <div className="w-full flex">
             <PreferenceOptions
               crrPopUp={crrOptions}
               setCrrPopUp={setCrrOptions}
