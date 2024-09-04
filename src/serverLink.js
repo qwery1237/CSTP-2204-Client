@@ -1,3 +1,2 @@
-let serverLink = 'https://cstp-2204-jin-harinder-018c35245b00.herokuapp.com';
-
+let serverLink = 'https://difficult-celina-jin-fuelgo-03a74044.koyeb.app';
 export default serverLink;

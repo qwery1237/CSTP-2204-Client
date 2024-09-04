@@ -8,6 +8,7 @@ export default function LandingPage() {
   const { user } = useAuth();
 
   const handleMovePage = async () => {
+    console.log(user);
     user ? navigate('/home') : navigate('/accounts/login');
   };
 

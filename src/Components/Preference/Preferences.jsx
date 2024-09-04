@@ -1,24 +1,24 @@
-import { useContext, useEffect, useState } from "react";
-import Context from "../../context";
-import PreferenceItem from "./PreferenceItem";
-import PreferenceOptions from "./PreferenceOptions";
-import { DEFAULT_PREFERENCE } from "../../Screen/Home";
+import { useContext, useEffect, useState } from 'react';
+import Context from '../../context';
+import PreferenceItem from './PreferenceItem';
+import PreferenceOptions from './PreferenceOptions';
+import { DEFAULT_PREFERENCE } from '../../Screen/Home';
 
 export const PREFERENCES = [
-  { title: "Recently updated" },
-  { title: "Sort", options: ["Distance", "Rating", "Price"] },
+  { title: 'Recently updated' },
+  { title: 'Sort', options: ['Distance', 'Rating', 'Price'] },
   {
-    title: "Fuel type",
-    options: ["Regular", "Mid-grade", "Premium", "Diesel"],
+    title: 'Fuel type',
+    options: ['Regular', 'Mid-grade', 'Premium', 'Diesel'],
   },
   {
-    title: "Amenities",
+    title: 'Amenities',
     options: [
-      "Car wash",
-      "Atm",
-      "Air pump",
-      "Convenience store",
-      "Ev charging station",
+      'Car wash',
+      'Atm',
+      'Air pump',
+      'Convenience store',
+      'Ev charging station',
     ],
   },
 ];
@@ -52,8 +52,8 @@ export default function Preferences({ isList, preferences, setPreferences }) {
       switch (crrPref[1]) {
         case 0:
           return (
-            station_a.distanceFromUser.replace(" km", "") -
-            station_b.distanceFromUser.replace(" km", "")
+            station_a.distanceFromUser.replace(' km', '') -
+            station_b.distanceFromUser.replace(' km', '')
           );
 
         case 1:
@@ -96,9 +96,9 @@ export default function Preferences({ isList, preferences, setPreferences }) {
 
   return (
     <>
-      <div className="w-full mt-4">
-        <div className="w-full flex flex-col">
-          <div className="w-full flex justify-evenly max-[415px]:justify-start overflow-x-auto gap-x-2 px-4 max-[446px]:mb-4">
+      <div className='w-full mt-4'>
+        <div className='w-full flex flex-col'>
+          <div className='w-full flex justify-evenly max-[415px]:justify-start overflow-x-auto gap-x-2 px-4 max-[446px]:mb-4'>
             {PREFERENCES.map((item, i) => {
               if (i == 1 && !isList) {
                 return;
@@ -118,7 +118,7 @@ export default function Preferences({ isList, preferences, setPreferences }) {
               );
             })}
           </div>
-          <div className="w-full flex">
+          <div className='w-full flex'>
             <PreferenceOptions
               crrPopUp={crrOptions}
               setCrrPopUp={setCrrOptions}
