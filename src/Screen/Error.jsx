@@ -4,7 +4,6 @@ import Background from '../Components/Landing/Background';
 
 export default function Error() {
   const error = useRouteError();
-  console.log(error.message);
   const { statusText, data } = useRouteError();
   return (
     <div className='w-screen h-screen bg-lightMode-bg dark:bg-darkMode-bg flex justify-center items-center'>

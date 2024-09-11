@@ -34,12 +34,10 @@ export const getFavouriteStations = async (stations, token) => {
     if (!success) throw new Error(message);
     return data;
   } catch (error) {
-    console.log(error);
     throw new Error(error.message);
   }
 };
 export const getGasStationById = async (placeId, token) => {
-  
   try {
     const response = await axios.get(
       serverLink + '/user/getgasstationdata/' + placeId,
@@ -90,7 +88,7 @@ export const getCrrLocation = async () => {
     }
   });
 };
-export const getUserCommentInfo = async ( token,email) => {
+export const getUserCommentInfo = async (token, email) => {
   try {
     const response = await axios.post(
       serverLink + '/user/getusercommentinfo',
@@ -108,4 +106,3 @@ export const getUserCommentInfo = async ( token,email) => {
     throw new Error(error.message);
   }
 };
-

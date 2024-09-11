@@ -38,7 +38,6 @@ export default function Avatar() {
           avatars.map(({ link, levelCap }) => {
             const isCrrAvatar = link == crrAvatar;
             const isActive = levelCap <= userLv;
-            console.log(userLv);
             const preventClick = isCrrAvatar || !isActive;
             return (
               <div
