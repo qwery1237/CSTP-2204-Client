@@ -32,13 +32,13 @@ During the development of Fuel Go, we focused on the following key aspects:
 ### My Contributions
 - Created the **Figma design** for the app's UI. [View the Figma Design](https://www.figma.com/community/file/1425250046832718731/fuel-go)
 - Structured and improved the **frontend code**.
-- Connected the **frontend** to the **backend APIs** and performed testing.
+- Connected the **frontend** to the **backend APIs**, **replacing hardcoded data with real backend data**, and performed testing.
 - Debugged issues related to frontend-backend integration and communicated them to my teammate for fixes.
 - Contributed to additional frontend code for features as needed.
 
 ### Collaborator's Contributions
-- Developed the **frontend** based on the Figma design.
-- Implemented the **backend APIs** and integrated them with the frontend.
+- Developed the **frontend** based on the Figma design using **hardcoded data** (without real database integration).
+- Implemented the **backend APIs**.
 - Handled the **gas station detail page** integration between frontend and backend.
 - Contributed to additional frontend code for features as needed.
 
