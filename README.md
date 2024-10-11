@@ -4,6 +4,16 @@
 
 Fuel Go is an app designed to help users find nearby gas stations based on their location, displaying results in both map and list formats. This project was a collaborative effort with a friend from school. You can find the original project repository [here](https://github.com/harinder24/FuelGo).
 
+- [Motivation](#motivation)
+- [Focus Areas](#focus-areas)
+- [Contributions](#contributions)
+    - [My Contributions](#my-contributions)
+    - [Collaborator's Contributions](#collaborators-contributions)
+- [What I Learned](#what-i-learned)
+- [Tech Stack & Tools](#tech-stack--tools)
+- [Key Features](#key-features)
+- [Portfolio & GitHub Page](#portfolio--github-page)
+- 
 ## Motivation
 
 This app was my graduation project, developed in collaboration with a friend. We wanted to create a map-based application, and we decided on a gas station finder since gas stations are commonly searched for. The project provided an opportunity to work with real-time location data and create an app that could offer both functionality and convenience to users.
