@@ -2,7 +2,7 @@
 
 ### Gas Station Finder & Review App
 
-Fuel Go is an app designed to help users find nearby gas stations based on their location, displaying results in both map and list formats. This project was a collaborative effort with a friend from school. You can find the original project repository [here]([ORIGINAL_REPO_LINK](https://github.com/harinder24/FuelGo)).
+Fuel Go is an app designed to help users find nearby gas stations based on their location, displaying results in both map and list formats. This project was a collaborative effort with a friend from school. You can find the original project repository [here](https://github.com/harinder24/FuelGo).
 
 ## Motivation
 
