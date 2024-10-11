@@ -18,7 +18,7 @@ During the development of Fuel Go, we focused on the following key aspects:
 ## Contributions
 
 ### My Contributions
-- Created the **Figma design** for the app's UI. [View the Figma Design]([FIGMA_LINK](https://www.figma.com/community/file/1425250046832718731/fuel-go))
+- Created the **Figma design** for the app's UI. [View the Figma Design](https://www.figma.com/community/file/1425250046832718731/fuel-go)
 - Structured and improved the **frontend code**.
 - Connected the **frontend** to the **backend APIs** and performed testing.
 - Debugged issues related to frontend-backend integration and communicated them to my teammate for fixes.
@@ -59,5 +59,5 @@ During the development of Fuel Go, I learned a lot in various areas, including:
 
 ## Portfolio & GitHub Page
 
-You can view this project as part of my portfolio and access the GitHub repository through [this link]([YOUR_GITHUB_REPO_LINK](https://qwery1237.github.io/portfolio/)).
+You can view this project as part of my portfolio and access the GitHub repository through [this link](https://qwery1237.github.io/portfolio/).
 
